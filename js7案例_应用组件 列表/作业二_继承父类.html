@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>作业二</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//Person:name,age,   showInfo();
+		function Person(name,age){
+			this.name=name;
+			this.age=age;
+		}
+		Person.prototype={
+			showInfo:function(){
+				document.write("姓名："+this.name+"<br/>年龄："+this.age+"<br/>");
+				return;
+			}
+		}
+		//emp 继承自Person:   salary,   pay();
+		function emp(name,age,salary){
+			this.salary=salary;
+			Person.call(this,name,age);//调用父类的构造函数
+			this.pay=function(){
+				document.write("name："+this.name+"<br/>age："+this.age+"<br/>salary："+this.salary+"<br/>") ;
+			}
+			return;
+		}
+
+		emp.prototype=new Person();
+		emp.prototype.constructor=emp;
+
+		var emp=new emp('smith',20,40000);
+		emp.showInfo();
+		emp.pay();
+	</script>
+</body>
+</html>

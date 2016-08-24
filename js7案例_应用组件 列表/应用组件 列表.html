@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+		.redText{
+			color:red;
+		}
+	</style>
+</head>
+<body>
+	<script type="text/javascript">
+		function TreeItem(text,icon,link){
+			this.text=text;
+			this.icon=icon;
+			this.link=link;
+			this.sonItems=[];
+		}
+		//扩展功能：添加子节点，获取子节点的数量，获取所有的子节点，显示节点
+		TreeItem.prototype={
+			attributes:{//定义属性
+				className:""
+			},
+			addSonItem:function(sonItem){//添加 子节点
+				this.sonItems.push(sonItem);//给数组里添加元素
+			},
+			getSonItemCount:function(){//获取子节点的数量
+				return this.sonItems.length;
+			},
+			getAllSonItem:function(){//获取所有的子节点
+				return this.sonItems;
+			},
+			showItem:function(){//显示节点!!
+				//判断 sonItems的长度<=0
+				if(this.sonItems.length<=0){//输出 <li>text</li>
+					document.write("<li");
+					if(this.attributes.className){//如果className属性不为空
+						document.write(" class='"+this.attributes.className+"'");//   <li class=''
+					}
+					document.write(">");
+					if(this.link){//判断link链接是否存在
+						document.write("<a href='"+this.link+"'>");
+						//   <a href=''>
+					}
+					document.write(this.text);
+					if(this.link){//再判断一次，输入闭合的a标签
+						document.write("</a>");
+					}
+					document.write("</li>");
+					return ;//起到打断的作用
+				}
+				//否则
+				document.write("<li>"+this.text);//输出 <li>text				
+					document.write("<ul>");//输出 <ul>
+					for(var i=0;i<this.sonItems.length;i++){
+						//循环sonItems的子节点
+						this.sonItems[i].showItem();
+						// document.write("<li>"+this.sonItems[i].text+"</li>");//这里只取到了t1和t2，因为只调用了一次showItem，之后并不会取t1和t2的子节点了
+						
+					}
+					document.write("</ul>");//输出 </ul>		
+				document.write("</li>");//输出 </li>
+
+			}
+		};
+
+		var root=new TreeItem('root','','');
+		root.attributes.className="redText";
+		var t1=new TreeItem('t1','','');
+
+		var t11=new TreeItem('t11','','');
+		t1.addSonItem( t11 );
+		var t12=new TreeItem('t12','','');
+		t1.addSonItem( t12 );
+
+		var t111=new TreeItem('baidu','','http://www.baidu.com');
+		t11.addSonItem( t111);
+
+		var t2=new TreeItem('t2','','');
+
+		root.addSonItem( t1 );
+		root.addSonItem( t2 );
+
+		console.log(root.getSonItemCount());
+		var allitems=root.getAllSonItem();
+		for(var i=0;i<allitems.length;i++){
+			console.log(allitems[i].text);
+		}
+
+		root.showItem();
+	</script>
+</body>
+</html>

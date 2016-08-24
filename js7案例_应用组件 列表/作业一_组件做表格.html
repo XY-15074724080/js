@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>作业一</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function YcTable(date){
+			this.data=data;
+		}
+
+		YcTable.prototype={
+			showTable:function(){
+				var table=document.createElement("table");
+				table.width=200;
+				table.cellSpacing=0;
+				table.cellPadding=0;
+				table.border=1;
+				var thd=document.createElement("tr");
+				for(var i=0;i<this.getColumnCount();i++){
+					var t=document.createElement("td");
+					t.innerHTML=this.getColumnNames()[i];
+					thd.appendChild(t);
+				}
+				table.appendChild(thd);
+				for(var i=0;i<this.data.length;i<i++){
+					var tr=document.createElement("tr");
+					for(var key in this.data[i]){
+						var td=document.createElement("td");
+						//console.log(this.data[i][key]);
+						td.innerHTML=this.data[i][key];
+						tr.appendChild(td);
+					}
+					table.appendChild(tr);
+				}
+				document.body.appendChild(table);		
+			},
+			getTotalCount:function(){
+				return this.data.length;
+			},
+			getColumnCount:function(){
+				var length=0;
+				for(var key in this.data[0]){
+					length++;
+				}
+				return length;
+				//return Object.keys(this.data[0]).length;//可取出所有的列的长度（优雅写法）
+			},
+			getColumnNames:function(){
+				var names=[];
+				for(var key in this.data[0]){
+					names.push(key);
+				}
+				return names;
+				//return Object.keys(this.data[0]);
+			},
+			getValue:function(){
+				var value=[];
+				for(var i=0;i<this.data.length;i++){
+					for(var key in this.data[i]){
+						value.push(this.data[i][key]);
+					}
+				}
+				return value;
+			}
+		}
+
+		var data=[{name:'zy',age:20},{name:'smith',age:20},{name:'tom',age:22}];
+		var ycTable=new YcTable(data);
+		ycTable.showTable();
+		console.log( ycTable.getTotalCount() );
+		console.log( ycTable.getColumnCount() );
+		console.log( ycTable.getColumnNames() );
+		console.log( ycTable.getValue() );
+	</script>
+</body>
+</html>
