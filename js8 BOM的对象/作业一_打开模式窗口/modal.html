@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	省份：<input type="text" name="sheng" id="sheng" /><br/>
+	市：<input type="text" name="shi" id="shi" /><br/>
+	<input type="button" name="true" value="确定" onclick="change(1)">
+	<input type="button" name="false" value="取消" onclick="change(0)">
+
+	<script type="text/javascript">
+		function change(i){
+			var sheng=document.getElementById("sheng");
+			var shi=document.getElementById("shi");
+			if(i==0){
+				window.returnValue="";
+				self.close();
+			}
+			if(i==1){
+				window.returnValue=sheng.value+" "+shi.value;//回传值
+				self.close();//关闭自己
+			}
+		}
+	</script>
+</body>
+</html>

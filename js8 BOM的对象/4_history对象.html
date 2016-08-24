@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>history</title>
+	<!--History 对象包含用户（在浏览器窗口中）访问过的 URL。
+
+		History 对象是 window 对象的一部分，可通过 window.history 属性对其进行访问。
+
+		注释：没有应用于 History 对象的公开标准，不过所有浏览器都支持该对象。-->
+</head>
+<body>
+	<a href="b.html">b.html</a>
+	<a href="c.html">c.html</a>
+	<!--History 对象方法
+		方法 			描述
+		back() 		加载 history 列表中的前一个 URL。
+		forward() 	加载 history 列表中的下一个 URL。
+		go() 		加载 history 列表中的某个具体页面。-->
+	<input type="text" name="num" id="num" />
+	<div id="demo1" onclick="javascript:history.forward()">前进</div>
+	<div id="demo2" onclick="javascript:history.back()">后退</div>
+	<div id="demo3" onclick="javascript:gowhere()">go</div>
+
+	<script type="text/javascript">
+		function gowhere(){
+			var num=document.getElementById("num");
+			history.go(num);
+		}
+	</script>
+</body>
+</html>

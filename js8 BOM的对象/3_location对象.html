@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>location</title>
+	<!--Location 对象包含有关当前 URL 的信息。
+
+		Location 对象是 Window 对象的一个部分，可通过 window.location 属性来访问。-->
+</head>
+<body>
+	<!-- 将这段代码布置到tomcat服务器上运行 -->
+	<div id="demo1">点击这里获取URL信息</div>
+	<div id="demo2">location.href -> 跳转到baidu首页</div>
+	<div id="demo3">assign -> 跳转到baidu首页</div>
+	<div id="demo4">replace -> 跳转到baidu首页</div>
+	<div id="demo5">reload -> 跳转到baidu首页</div>
+	
+
+	<script type="text/javascript">
+		document.getElementById("demo1").onclick=function(){
+			alert(
+				/*
+				 * Location 对象属性
+					属性 				描述
+					hash 		设置或返回从井号 (#) 开始的 URL（锚）。
+					host 		设置或返回主机名和当前 URL 的端口号。
+					hostname 	设置或返回当前 URL 的主机名。
+					href 		设置或返回完整的 URL。
+					pathname 	设置或返回当前 URL 的路径部分。
+					port 		设置或返回当前 URL 的端口号。
+					protocol 	设置或返回当前 URL 的协议。
+					search 		设置或返回从问号 (?) 开始的 URL（查询部分）。
+				 */
+				"当前URL信息：\n"+
+				"URL："+location.href+"\n"+
+				"域名："+location.host+"\n"+
+				"主域名："+location.hostname+"\n"+
+				"协议："+location.protocol+"\n"+
+				"路径："+location.pathname+"\n"+
+				"参数："+location.search+"\n"+
+				"hash值："+location.hash值
+				);
+		}
+		
+		/*
+		 * Location 对象方法
+			属性 			描述
+			assign() 	加载新的文档。
+			reload() 	重新加载当前文档。
+			replace() 	用新的文档替换当前文档。
+		 */
+		document.getElementById("demo2").onclick=function(){
+			location.href="http://www.baidu.com";
+		}
+
+		document.getElementById("demo3").onclick=function(){
+			location.assign("http://www.baidu.com");//加载新的文档，地址栏中会保存历史路径
+		}
+
+		document.getElementById("demo4").onclick=function(){
+			location.replace("http://www.baidu.com");//replace() 方法不会在 History 对象中生成一个新的记录。当使用该方法时，新的 URL 将覆盖 History 对象中的当前记录。
+		}
+
+		document.getElementById("demo5").onclick=function(){
+			location.reload();
+			//如果该方法没有规定参数，或者参数是 false，它就会用 HTTP 头 If-Modified-Since 来检测服务器上的文档是否已改变。如果文档已改变，reload() 会再次下载该文档。如果文档未改变，则该方法将从缓存中装载文档。这与用户单击浏览器的刷新按钮的效果是完全一样的。
+
+			//如果把该方法的参数设置为 true，那么无论文档的最后修改日期是什么，它都会绕过缓存，从服务器上重新下载该文档。这与用户在单击浏览器的刷新按钮时按住 Shift 健的效果是完全一样。
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2_跨浏览器的获取屏幕宽高的方法</title>
+
+	<script type="text/javascript">
+		//对于绝大部分浏览器使用window.innerWidth即可获取宽度，使用document.documentElement.clientWidth || document.body.clientWidth 为了实现对IE6，7的支持。高度同上。
+		//window.innerWidth => 兼容 ie8+,ff,chrome
+		//document.documentElement.clientWidth || document.body.clientWidth => 兼容ie4,5,6,7,8
+		var width=window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+		var height=window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+		document.write(width+"   "+height);
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

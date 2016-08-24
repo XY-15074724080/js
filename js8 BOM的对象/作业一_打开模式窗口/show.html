@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	姓名：<input type="text" name="uname" /><br/>
+	地址：<input type="text" name="locate" id="loc" />
+	<input type="button" name="select" value="选择" onclick="open_win()" />
+
+	<script type="text/javascript">
+		function open_win(){
+			//显示模式窗口，模式窗口：1、唯一	2、回传值
+			var txt=window.showModalDialog("modal.html",window,"dialogWidth=300px;dialogHeight=200px;status=0;location=0;resizable=0");
+			if(txt){//如果有回传值
+				document.getElementById("loc").value=txt;
+			}
+		}
+	</script>
+</body>
+</html>
