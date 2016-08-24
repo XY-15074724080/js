@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>1_案例_打字测试</title>
+</head>
+	<style type="text/css">
+		.style1{
+			color:green;
+		}	
+		.style2{
+			color:red;
+		}
+	</style>
+<body>
+	打字练习：<h2 id="test"></h2>
+	<p>键入内容：
+		<input name="textfield" type="text" size="50" id="inp" />
+	</p>
+
+	<script type="text/javascript">
+		var str="welcome to study center";
+
+		window.onload=function(){
+			var htmlstr="";
+			for(i=0;i<str.length;i++){				//截取从i到i+1的字符
+				htmlstr+="<span id='myspan"+i+"'>"+str.substring(i,i+1)+"</span>";
+			}
+			document.getElementById("test").innerHTML=htmlstr;
+		}
+
+		var j=0;//控制 是哪一个字符变颜色
+		var inp=document.getElementById("inp");
+		inp.onkeydown=function(event){//只能监听大写字母
+			var e=event?event:window.event;
+			var keycode=e.keyCode;
+			//生成一个字符					大写A和小写a之间隔了32个长度
+			var realchar=String.fromCharCode(keycode+32);//这里转码为小写字母来比较
+			//alert(realchar);
+			//     		a-z 					回删			空格
+			if( (keycode>=65&&keycode<=90) || keycode==8 || keycode==32 ){
+				if(str.substring(j,j+1)==realchar){//截取从i到i+1的字符	比较与输入的值是否相等
+					document.getElementById("myspan"+j).className="style1";
+				}else if(keycode==8){//backspace  ：回删键
+					j--;
+					if(j<0){
+						j=0;
+					}
+					document.getElementById("myspan"+j).className="";
+					return;//为了不让本身的j自减与下面的j自加同时作用
+				}else{
+					document.getElementById("myspan"+j).className="style2";
+				}
+				j++;
+			}
+		}
+	</script>
+</body>
+</html>

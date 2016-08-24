@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_IE事件处理程序</title>
+</head>
+<body>
+<pre>
+在IE里面：(没有addEventListener只有attachEvent)
+		attachEvent：添加事件
+		detachEvent：删除事件
+	</pre>
+	<input type="button" value="IE事件处理程序" id="btn" />
+	<script type="text/javascript">
+		//添加事件：attachEvent		删除事件：detachEvent
+		var btn=document.getElementById("btn");
+		//     事件名    事件处理函数
+		btn.attachEvent("onclick",show);
+
+		function show(){
+			alert("IE事件处理程序");
+		}
+
+		//btn.detachEvent("onclick",show);
+	</script>
+</body>
+</html>

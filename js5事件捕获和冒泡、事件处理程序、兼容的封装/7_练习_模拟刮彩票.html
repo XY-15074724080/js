@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>7_练习_模拟刮彩票</title>
+	<style type="text/css">
+		#wrap{
+			width:500px;
+			height:500px;
+			border:1px solid #000;
+			background-image:url(img/1.jpg);
+			background-size: 500px 500px;
+			position:relative;
+		}
+		#wrap div{
+			width:50px;
+			height:50px;
+			background-image: url(img/2.jpg);
+			background-size: 50px 50px;
+			position:absolute;
+			transition:4s;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrap"></div>
+	<script type="text/javascript">
+		var wrap=document.getElementById("wrap");
+		var l=0;//left
+		var t=0;//top
+		var str="";//采用字符串拼接的形式插入div
+		for(var i=0;i<100;i++){
+			//计算位置
+			l=(i%10)*50;// 0->0  1->50  9->450  10->0
+			t=Math.floor(i/10)*50;
+			str+="<div style='left:"+l+"px;top:"+t+"px;'></div>";
+		}
+		wrap.innerHTML=str;
+
+		//获取到所以的小格子
+		var divs=wrap.getElementsByTagName("div");
+		for(var i=0;i<divs.length;i++){
+			divs[i].onmouseover=function(){
+				this.style.opacity=0;
+				this.style.transform="scale(0)";
+			}
+		}
+	</script>
+</body>
+</html>

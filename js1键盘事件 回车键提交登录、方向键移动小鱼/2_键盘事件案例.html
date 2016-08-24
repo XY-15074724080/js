@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2_鼠标事件案例</title>
+</head>
+<body>
+	<p id="myp">当前最火的新闻</p>
+	<textarea id="myt" rows="5px" cols="40px"></textarea>
+
+	<script type="text/javascript">
+		//html事件：获得焦点（focus）
+		//			失去焦点（blur）
+		var myp=document.getElementById("myp");
+		var myt=document.getElementById("myt");
+		myt.onfocus=function(){//获得焦点
+			var str=myt.value;
+			if(str.length<=140){
+				myp.innerHTML="你还可以输入"+(140-str.length)+"个字";
+			}else{
+				myp.innerHTML="你已经超出"+(str.length-140)+"个字";
+			}
+		}
+		myt.onblur=function(){//失去焦点
+			myp.innerHTML="当前最火的新闻";
+		}
+		myt.onkeyup=function(){//键盘松开
+			var str=myt.value;
+			if(str.length<=140){
+				myp.innerHTML="你还可以输入"+(140-str.length)+"个字";
+			}else{
+				myp.innerHTML="你已经超出"+(str.length-140)+"个字";
+			} 
+		}
+		//keydown：用户在键盘上按下某按键时发生。一直按着某按键则会不断触发（opera浏览器除外）
+		//keypress：用户按下一个按键，并产生一个字符时发生（也就是不管类似shift、alt、ctrl之类的键，就是说用户按了一个能在屏幕上输出字符的按键keypress事件才会触发）。一直按着某按键则会不断触发
+		
+		//也就是说，keydown和keypress的区别在于，是否能监听用户按下ctrl、shift等功能键。keypress是监听不到这些功能键的（firefox除外），而keydown可以。
+	</script>
+</body>
+</html>

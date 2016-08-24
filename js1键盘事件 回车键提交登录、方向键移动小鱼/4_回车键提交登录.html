@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>4_回车键提交登录</title>
+</head>
+<body>
+	<form action="" method="get">
+		<p>用户名：<input name="uname" type="text" maxlength="6" size="16" /></p>
+		<p>密码：<input name="password" type="password" maxlength="6" size="16" /></p>
+		<input name="btn" type="submit" value="注册" />
+	</form>
+
+	<script type="text/javascript">
+		document.onkeydown=function(event){
+			var e=event?event:window.event;
+			//alert(e.keyCode);//查看回车键的键值
+			if(e.keyCode==13){
+				//回车键，提交表单
+				document.getElementsByTagName("form")[0].submit();
+			}
+		}
+	</script>
+</body>
+</html>

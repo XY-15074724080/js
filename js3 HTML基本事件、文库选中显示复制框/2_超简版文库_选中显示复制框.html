@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2_超简版文库_选中显示复制框</title>
+	<style type="text/css">
+		#mydiv{
+			display:none;
+			position:absolute;
+			left:0;
+			top:0;
+			background:#fff;
+			color:lime;
+			border:1px solid gray;
+			padding:5px;
+		}
+		#txt{
+			width:600px;
+			height:600px;
+			border:none;
+		}
+	</style>
+</head>
+<body>
+				<!--使文章只读，不能修改-->
+	<textarea id="txt" readonly="yes">测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字测试文字</textarea>
+	<div id="mydiv">复制 | 搜索 | 翻译 | 百科 | 分享 | 二维码</div>
+	<script type="text/javascript">
+		var txt=document.getElementById("txt");
+		var mydiv=document.getElementById("mydiv");
+		var x,y=0;//鼠标的位置
+
+		txt.onselect=function(){
+			//它的event事件中没有clientX和clientY属性
+			//设置div出现的位置
+			mydiv.style.display="block";
+			mydiv.style.left=x+"px";
+			mydiv.style.top=y+10+"px";
+		}
+		txt.onmouseup=function(event){//这里来取鼠标松开时的x坐标和y坐标，用来确定div的位置
+			var e=event?event:window.event;
+			x=e.clientX;
+			y=e.clientY;
+		}
+		document.onmousedown=function(){
+			mydiv.style.display="none";
+		}
+	</script>
+</body>
+</html>

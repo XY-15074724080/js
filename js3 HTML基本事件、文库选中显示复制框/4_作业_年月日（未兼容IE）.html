@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>4_作业_年月日</title>
+</head>
+<body>
+	<select id="nian"></select>
+	<select id="yue"></select>
+	<select id="ri"></select>
+</body>
+<script type="text/javascript">
+	var nian=document.getElementById("nian");
+	var yue=document.getElementById("yue");
+	var ri=document.getElementById("ri");
+	var robj=[28,29,30,31];
+
+	for(var i=0;i<30;i++){//设置年
+		var str="";
+		for(var j=1980;j<2010;j++){
+			str+="<option value='"+j+"'>"+j+"</option>";
+		}
+		nian.innerHTML=str;
+	}
+
+	(function(){
+		for(var i=1;i<13;i++){//初始化月
+			yue.innerHTML+="<option value='"+i+"'>"+i+"</option>";
+		}
+	})();
+
+	var istrue=false;
+	(function(){//初始化日期
+		for(var i=1;i<=robj[robj.length-1];i++){
+			ri.innerHTML+="<option value='"+i+"'>"+ i +"</option>";
+		}
+	})();
+
+	nian.onchange=function(){//当年份被选中
+		var index=yue.selectedIndex;
+		var txt=yue.options[index].text;
+		changeD(txt);
+		yue.onchange=function(){//当月份被选中，调用changeD函数改变日期
+			index=this.selectedIndex;
+			txt=this.options[index].text;
+			changeD(txt);
+		}
+
+		function changeD(txt){
+			if(txt==4 || txt==6 || txt==9 || txt==11 ){//在4,6,9,11月
+				//console.log("aa");
+				(function(){
+					for(var i=1;i<robj[robj.length-1];i++){
+						ri.innerHTML+="<option value='"+i+"'>"+ i +"</option>";
+					}
+				})();
+			}else{
+				if( (nian.value%400==0 || (nian.value%4==0 && nian.value%100!=0) ) && txt==2){//是闰年且在2月份
+					//console.log("bb");
+					istrue=true;
+					if(istrue){
+						(function(){
+							for(var i=1;i<=robj[1];i++){
+								ri.innerHTML+="<option value='"+i+"'>"+ i +"</option>";
+							}
+						})();
+					}
+				}else if(txt==2){//不是闰年的2月份
+					//console.log("kk");
+					istrue=false;
+					if(!istrue){
+						(function(){
+							for(var i=1;i<=robj[0];i++){
+								ri.innerHTML+="<option value='"+i+"'>"+ i +"</option>";
+							}
+						})();
+					}
+				}else{//除2,4,6,9,11月的其它月份
+					//console.log("dd");
+						(function(){
+						for(var i=1;i<=robj[robj.length-1];i++){
+							ri.innerHTML+="<option value='"+i+"'>"+ i +"</option>";
+						}
+					})();
+				}
+			}
+		}
+	}
+</script>
+</html>

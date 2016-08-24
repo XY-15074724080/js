@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_鼠标事件的属性keyCode</title>
+</head>
+<body>
+	<input type="text" value="keydown" id="inp1"/><br/><br/>
+	<input type="text" value="keypress" id="inp2"/>
+
+	<script type="text/javascript">
+		var inp1=document.getElementById("inp1");
+		var inp2=document.getElementById("inp2");
+		inp1.onkeydown=function(event){//监听到的是大写字母（在108位键盘里会监听右边的数字键为小写字母），因为keydown是只管按下的
+			var e=event?event:window.event;//兼容
+			var keycode=e.keyCode;//所有事件的属性都在event里面
+			var txt=String.fromCharCode(keycode);//fromCharCode：把一个unicode编码值转换成字符值
+			console.log("keydown："+txt);
+		}
+
+		inp2.onkeypress=function(event){//所监听的是大小写字母，它可以区分大小写
+			var e=event?event:window.event;
+			//兼容firefox
+			if(e.keyCode){//火狐里的e.keyCode为0，是取不到值的，所以这里是对于其它浏览器而设的
+				var keycode=e.keyCode;
+				var txt=String.fromCharCode(keycode);//fromCharCode：把一个Unicode编码值转换成字符值
+			}else{
+				//这里才是对于火狐来设的
+				var keycode=e.which;  //which是专门用来在火狐里取键值的
+				var txt=String.fromCharCode(keycode);
+			}
+			console.log("keypress："+txt);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_案例_可编辑的表格</title>
+	<style type="text/css">
+		*{
+			font-size:12px;
+			font-family:"微软雅黑";
+		}
+		
+		table{
+			border:1px solid #999;
+			border-collapse:collapse;/*修正单元格之间的边框为可合并*/
+			width:400px;
+		}
+		
+		table tr{
+			line-height:24px;
+		}
+		
+		table tbody th{
+			background:#36F;
+			width:50%;
+		}
+		
+		table td{
+			text-align:center;
+		}
+		
+		a{
+			display:inline-block;
+			padding:8px;
+			background:#3C6;
+			text-decoration:none;
+			font-size:18px；
+			font-weight:bold;
+			color:#FC3;
+			font-family:"隶书";
+			margin-left:10px;
+		}
+		
+		a:hover{
+			background:#666;
+		}
+		
+		#tishiInfo{
+			border:1px solid #699;
+			border-radius:3px;
+			width:200px;
+			height:30px;
+			line-height:30px;
+			font-size:14px;
+			background:#C1E3D3 url(images/tishi.png) no-repeat left center;
+			color:#fff;
+			padding-left:30px;
+			position:absolute;
+			top:200px;
+			left:600px;
+			display:none;
+		}
+	</style>
+</head>
+<body>
+	<table border="1px" cellpadding="0px" cellspacing="0px" id="mytable" align="center" width="600px">
+    	<thead>
+        	<tr>
+            	<th colspan="2">学生信息表</th>
+            </tr>
+        </thead>
+        <tbody>
+        	<tr>
+            	<th>学号</th>
+                <th>姓名</th>
+            </tr>
+            <tr>
+            	<td>08301440110</td>
+                <td>张三</td>
+            </tr>
+        	<tr>
+            	<td>08301440111</td>
+                <td>李四</td>
+            </tr>
+            <tr>
+            	<td>08301440112</td>
+                <td>王五</td>
+            </tr>
+            <tr>
+            	<td>08301440113</td>
+                <td>赵六</td>
+            </tr>
+            <tr>
+            	<td>08301440114</td>
+                <td>钱七</td>
+            </tr>
+            <tr>
+            	<td>08301440115</td>
+                <td>王八</td>
+            </tr>
+             <tr>
+            	<td>08301440112</td>
+                <td>王五</td>
+            </tr>
+            <tr>
+            	<td>08301440113</td>
+                <td>赵六</td>
+            </tr>
+            <tr>
+            	<td>08301440114</td>
+                <td>钱七</td>
+            </tr>
+            <tr>
+            	<td>08301440115</td>
+                <td>王八</td>
+            </tr>
+        </tbody>
+    </table>
+    <br /> <br />
+    <center><a href="javascript:delInfo()">删除光标所在行</a><a href="javascript:addInfo()">添加一行</a></center>
+    <p id="tishiInfo">信息修改成功...</p>
+
+    <script type="text/javascript">
+    	window.onload=function(){//等待外部资源加载完成
+    		showInfo();
+    	}
+
+    	var delObj;
+    	//封装_设置颜色
+    	function setColor(){
+    		//改变背景颜色   偶数行是白色，奇数行是蓝色
+    		var tbodyTrs=document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");//取出tbody下的所有tr
+    		for(var i=1;i<tbodyTrs.length;i++){//这里的i是索引值  
+                //i=1 =>第二行  i=2 =>第三行
+                //清除所有的背景颜色
+                tbodyTrs[i].style.cssText="background:none";
+    			if(i%2==0){//基数行
+    				tbodyTrs[i].style.cssText="background:#319CFF";
+    			}
+    		}
+    		//绑定事件，鼠标移入移出事件
+    		for(var i=1;i<tbodyTrs.length;i++){
+    			tbodyTrs[i].index=i;//用于记录索引，便于之后在闭包中判断奇偶行
+    			tbodyTrs[i].addEventListener("mouseover", function(){
+    				this.style.cssText="background:#63FFFF";
+    			});
+    			tbodyTrs[i].addEventListener("mouseout", function(){
+    				//alert(this.index);
+    				if(this.index%2==0){//奇数行
+    					this.style.cssText="background:#319CFF";
+    				}else{//偶数行
+    					this.style.cssText="background:#fff";
+    				}
+    			});
+    		}
+    	}
+    	function showInfo(){//显示表格效果的函数
+    		setColor();//调用封装的 设置颜色的函数
+
+	        //低版本IE不支持addEventListener，需要用attachEvent，而attachEvent与addEventListener的用法一模一样
+	    	var tds=document.getElementsByTagName("td");
+	    	if(arguments.length==1){//说明它是点击了 添加一行 的按钮，只给它的新添加的最后一行绑定事件，以防其它td绑定太多次事件
+	    		tds[tds.length-1].addEventListener("click",tdclick);//倒数第一个td
+	    		tds[tds.length-2].addEventListener("click",tdclick);//倒数第二个td
+	    	}else{
+	    		for(var i=0;i<tds.length;i++){
+	    			tds[i].removeEventListener("click",tdclick);//以防万一，防止大量数据中有重复执行的代码
+	    			tds[i].addEventListener("click",tdclick);//这样定义方便之后删除它的点击事件
+	    		}
+	    	}
+	    	
+	    	function tdclick(){
+	    		delObj=this.parentNode;
+    			//点击td，创建一个input标签
+	    		var inputObj=document.createElement("input");
+	    		inputObj.type="text";
+	    		inputObj.style.cssText="border:0px;font-size:12px";
+
+	    		//定义当前被点击的td
+	    		var tdObj=this;
+	    		//获取到td里面的值，赋给input 
+	    		inputObj.value=tdObj.innerHTML;
+	    		//把td里面的值清空
+	    		var txt=tdObj.innerHTML;//这里定义一个txt存储其原来的值，以便之后用户放弃修改时用
+	    		tdObj.innerHTML="";
+
+	    		tdObj.appendChild(inputObj);
+	    		//选中input标签里面的值
+	    		inputObj.select();
+
+	    		//删除td的点击事件
+	    		tdObj.removeEventListener("click",tdclick);
+
+	    		//添加键盘事件
+	            inputObj.onkeydown=function(event){
+	                var e=event?event:window.event;
+	                var keycode=e.keyCode;
+	                if(keycode==13){//回车键
+	                    //获取input标签里面的值，赋给td
+	                    var inputVal=this.value;//this.value是鼠标点击上input里面的值，也就是我们更改之后的值
+	                    tdObj.innerHTML=inputVal;//把我们更改过后的值赋给当前的td
+	                }else if(keycode==27){//esc键
+	                    tdObj.innerHTML=txt;//还原
+	                }
+	                tdObj.addEventListener("click",tdclick);//这里同样也要添加上它的点击事件
+	            }
+
+	            //区分IE浏览器和其它浏览器
+	            // if(window.ActiveXObject){//ActiveXObject这个属性是IE特有的
+	            //     console.log("aaaa");
+	            // }
+
+
+	    		//添加失去焦点事件
+	    		inputObj.onblur=function(){
+	    			tdObj.innerHTML=txt;
+	    			//tdObj.removeEventListener("click",tdclick);
+	    			//因为之前有删除它的点击事件，这时失焦后需要再加上它的点击事件
+	    			tdObj.addEventListener("click",tdclick);
+	    		}
+	    	}
+    	}
+
+    	function delInfo(){
+    		var result=confirm("你确定要删除这条数据吗？");
+    		if(result){//做删除操作
+                //兼容IE
+    			if(window.ActiveXObject){
+    				delObj.parentNode.removeChild(delObj);//找到它的父节点去删除它自己
+    			}else{
+    				delObj.remove();//删除对象   注意：IE中不支持remove()，需要兼容
+    			}
+    			//showInfo();  //会出BUG
+    			//BUG产生原因：1、在设置背景颜色的时候，没有先删除原先的背景颜色，再去添加
+    			//			   2、你绑定了多次事件
+    			//解决方法：封装 设置颜色 部分（不触发绑定事件），封装的部分需要先删除原先的背景颜色
+    			setColor();//重新设置一遍颜色
+    		}
+    	}
+
+    	function addInfo(){
+            //添加一个tr，插入到table里面去
+            /*方法：创建td，创建tr，把td插入到tr里面，再插入tbody里面*/
+    		var tbody=document.getElementsByTagName("tbody")[0];
+    		var trInfo=document.createElement("tr");
+    		var tdInfo=document.createElement("td");
+            //设值
+    		tdInfo.innerHTML="08301440112";//倒数第二个td
+    		trInfo.appendChild(tdInfo);
+
+    		var tdInfo2=document.createElement("td");
+    		tdInfo2.innerHTML="王九";//倒数第一个td
+    		trInfo.appendChild(tdInfo2);
+
+    		tbody.appendChild(trInfo);
+
+    		//showInfo();//会出BUG   原因：绑定了太多次事件
+            //我们想要的是，我们添加的最后一行去绑定事件就可以了
+    		showInfo(1);//解决方法：传一个参过去判断arguments，只让它的倒数第一个和倒数第二个td绑定事件
+
+    	}
+    	
+
+
+    </script>
+</body>
+</html>

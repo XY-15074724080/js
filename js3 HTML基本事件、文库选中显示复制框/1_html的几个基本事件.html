@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>1_html的几个基本事件</title>
+</head>
+<body style="-moz-user-select:none;"><!--用来禁止火狐中的文本被选定-->
+	<pre>
+		1. onload：网页加载事件（网页所有资源全部加载完后才触发事件）
+		2. onunload：卸载事件，网页关闭之前执行，用alert无效果，因为网页关闭时会阻塞所有弹框，之前只支持IE浏览器，现在也支持火狐了（刷新也会触发这个事件）
+				  onunload只兼容IE，那么对于firefox和google，要用onbeforeunload（注意：此事件必须return）
+		3. onfocus：获得焦点
+		4. onblur：失去焦点
+				获焦失焦并不支持所有的html对象
+		5. onselect：代表文本被选中，支持该事件的标签：input、textarea ，支持该事件的JavaScript对象：window
+	</pre>
+
+	<img src="2.jpg"/><br/>
+
+	<input type="text" id="inp" /><span id="myspan"></span><br/>
+	<!--注意：onfocus/onblur两个事件并不支持所有的html对象-->
+
+	<!--这里来兼容火狐-->
+	<div id="test" style="-moz-user-select:none;">这里是测试文字</div>
+	<input type="text" value="这里是测试文字" id="inp2"/>
+	<textarea id="txt">这里是测试文字</textarea>
+	<script type="text/javascript">
+		//onload
+		/*window.onload=function(){
+			alert("资料正在加载中，请稍后");
+		}*/
+
+		//onunload
+		/*
+		window.onunload=function(){
+			//千万不要用alert，因为网页关闭会阻塞所有弹框
+			//打开一个网页
+			window.open("http://www.baidu.com");
+		}
+		*/
+		
+		//onbeforeunload
+		/*//onunload只兼容IE，那么对于firefox和google，要用onbeforeunload
+		window.onbeforeunload=function(){
+			//注意：此事件必须return
+			return "真的要离开吗";
+		}
+		*/
+	</script>
+
+	<script type="text/javascript">
+		var inp=document.getElementById("inp");
+		var myspan=document.getElementById("myspan");
+		//获得焦点事件
+		inp.onfocus=function(){
+			myspan.innerHTML="用户正在输入";
+		}
+		//失去焦点事件
+		inp.onblur=function(){
+			myspan.innerHTML=inp.value;
+		}
+		myspan.onfocus=function(){
+			alert("a");//不会有反应
+		}
+	</script>
+
+	<script type="text/javascript">
+		var inp2=document.getElementById("inp2");
+		var div=document.getElementById("test");
+		var txt=document.getElementById("txt");
+		//注意：onselect事件在IE8以下只要选中一个内容就会触发事件
+		div.onselect=function(){//对div不起作用
+			alert("叫你");
+		}
+		inp2.onselect=function(){
+			alert("叫你选中");
+		}
+		txt.onselect=function(){
+			alert("叫你选中就选中");
+		}
+		//onselectstart几乎可以用于所有对象，对象被开始选中时，即选中动作刚开始，尚未实际被选中就触发事件
+		//注意：onselectstart不兼容firefox，它也不被input和textarea标签支持
+		div.onselectstart=function(){
+			return false;//这里专门用来阻止选中文本（就是禁止复制）
+		}
+	</script>
+</body>
+</html>

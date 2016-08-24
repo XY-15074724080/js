@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>5_方向键移动小鱼</title>
+</head>
+<body>
+	<img src="fish.gif" style="position:absolute;left:0px;top:0px;" width="80" height="80" id="fish" />
+
+	<script type="text/javascript">
+		document.onmousemove=function(event){
+			var e=event?event:window.event;//兼容
+			document.getElementById("fish").style.top=(e.clientY-40)+"px";//鱼的距上样式设为鼠标y轴位置减去40像素
+			document.getElementById("fish").style.left=(e.clientX-18)+"px";
+		}
+		document.onkeydown=function(event){
+			var e=event?event:window.event;
+			var fish=document.getElementById("fish");
+			//console.log(e.keyCode);//查看键值
+			var num;
+			switch(e.keyCode){
+				case 37:    //左键
+					num=parseInt(fish.style.left);//这里带有单位，所以用parseInt去掉单位，方便运算
+					if(num>=10){
+						fish.style.left=(num-10)+"px";
+					};
+					break;
+				case 38:    //上键
+					num=parseInt(fish.style.top);
+					if(num>=10){
+						fish.style.top=(num-10)+"px";
+					};
+					break;
+				case 39:    //右键
+					num=parseInt(fish.style.left);
+					//					文档节点的长度			减去鱼的长度
+					if(num+10<=document.documentElement.clientWidth-76){
+						console.log(fish.style.left);
+						fish.style.left=(num+10)+"px";
+					}else{
+						console.log("else："+fish.style.left);
+					};
+					break;
+				case 40:    //下键
+					num=parseInt(fish.style.top);
+					if(num<=document.documentElement.clientHeight){
+						fish.style.top=(num+10)+"px";
+					};
+					break;
+			}
+		}
+	</script>
+</body>
+</html>

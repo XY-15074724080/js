@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_html事件的onchange事件</title>
+</head>
+<body>
+	onchange：内容改变的时候触发事件。并不是实时监听，而是失去焦点的时候监听（一般用于select标签）<br/>
+	<input type="text" id="inp"/>
+	<select id="sel">
+		<option value="hn">湖南</option>
+		<option value="ah">安徽</option>
+		<option value="hb">湖北</option>
+		<option>内蒙古</option>
+		<option>北海</option>
+	</select>
+
+	<script type="text/javascript">
+		var inp=document.getElementById("inp");
+		var sel=document.getElementById("sel");
+
+		inp.onchange=function(){
+			alert("内容改变");//失焦之后才监听
+		}
+
+		sel.onchange=function(){
+			//console.log(this.value);//获得的是它的value属性的值，若没有定义value属性，现代浏览器会自动补全来取它的文本值
+			//console.log(this.text);//=>undefined  因为这里获取的是它的text属性的值
+			
+			//获取到下拉列表的值
+			var index=this.selectedIndex;//selectedIndex 属性可设置或返回下拉列表中被选选项的索引号，若允许多重选择，则仅会返回第一个被选选项的索引号
+			//console.log(index);
+			console.log(this.options[index].value);//获取value属性的值
+			console.log(this.options[index].text);//获取里面的文本值
+			//options属性：获取到select下所有的option
+
+		}
+	</script>
+</body>
+</html>

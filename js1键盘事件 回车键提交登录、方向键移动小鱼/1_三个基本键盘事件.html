@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>1_三个基本键盘事件</title>
+</head>
+<body>
+	<input type="text" id="txt"/>
+
+	<script type="text/javascript">
+		var txt=document.getElementById("txt");
+		// txt.onkeydown=function(){//键盘被按下
+		// 	//alert("keydown事件被触发");//这不能清楚地看出是先触发事件还是先输入文字
+		// 	alert(txt.value);//能看出是先触发事件，再输入文字
+
+		// }
+		
+		// txt.onkeypress=function(){//按下并产生一个字符时发生，先触发事件，再显示内容
+		// 	//alert("keypress事件被触发");
+		// 	//console.log("aaa");
+		// 	alert(txt.value);
+		// }
+
+		txt.onkeyup=function(){//键盘松开才触发事件，先显示内容，再触发事件
+			alert(txt.value);
+		}
+		//键盘事件兼容浏览器兼容的是火狐
+	</script>
+</body>
+</html>

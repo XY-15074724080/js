@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2_案例_音乐播放器</title>
+	<style type="text/css">
+		*{
+			margin:0px auto;
+			padding:0px;
+		}
+		body{
+			width:800px;
+		}
+		audio{
+			display:block;/*因为audio是内联块*/
+			margin-top:20px;
+		}
+		input{
+			padding:5px 20px;
+			border-radius:5px;
+			margin-top:10px;
+		}
+	</style>
+</head>
+<body>
+	<audio src="1.mp3" id="audio" controls="controls">
+		对不起，你的浏览器不支持html5，请更新浏览器
+	</audio>
+	<input type="button" value="播放" onclick="playOrPause(this)" />
+	<input type="button" value="隐藏控制框" onclick="hideOrShowControls(this)" />
+	<input type="button" value="开启静音" onclick="muted(this)" />
+	<input type="button" value="获取播放时间" onclick="getCurrentTime()" />
+	<input type="button" value="音量+" id="upVol" onclick="vol('up')" />
+	<input type="button" value="音量-" id="upVol2" onclick="vol('down')" />
+	当前音量：<span id="nowVol"></span>
+
+	<script type="text/javascript">
+		var audio;
+		window.onload=function(){
+			audio=document.getElementById("audio");
+			//										取值范围：0-1
+			document.getElementById("nowVol").innerHTML=audio.volume*100;
+		}
+
+		//播放
+		function playOrPause(obj){
+			if(audio.paused){
+				audio.play();
+				obj.value="暂停";
+			}else{
+				audio.pause();
+				obj.value="播放";
+			}
+		}
+
+		//显示隐藏控件
+		function hideOrShowControls(obj){
+			if(audio.controls){
+				audio.removeAttribute("controls");//去除属性
+				obj.value="显示控制框";
+			}else{
+				audio.controls="controls";//添加属性
+				obj.value="隐藏控制框";
+			}
+		}
+
+		//开启静音
+		function muted(obj){
+			if(audio.muted){
+				audio.muted=false;//=>关闭静音      muted：设置或返回是否关闭声音
+				obj.value="开启静音";
+			}else{
+				audio.muted=true;//=>开启静音
+				obj.value="关闭静音";
+			}
+		}
+
+		//获得播放时间
+		function getCurrentTime(){
+			alert(audio.currentTime+'秒');
+		}
+
+		//控制音量
+		function vol(type){
+			if(type=='up'){
+				var volume=audio.volume+0.1;
+				if(volume>=1){
+					volume=1;
+				}
+				audio.volume=volume;
+			}else if(type=='down'){
+				var volume=audio.volume-0.1;
+				if(volume<=0){
+					volume=0;
+				}
+				audio.volume=volume;
+			}
+			document.getElementById("nowVol").innerHTML=parseInt(audio.volume*100);
+		}
+
+
+		//快捷键
+		document.onkeydown=function(event){
+			var e=event?event:window.event;
+			var keycode=e.keyCode;
+			/*
+				空格=》播放暂停
+				shift+s=》显示隐藏控制台
+			 */
+			if(keycode==32){//空格键
+				playOrPause(document.getElementsByTagName("input")[0]);
+			}
+			//shift+s => 显示/隐藏控制台
+			if(e.shiftKey && keycode==83 ){
+				hideOrShowControls(document.getElementsByTagName("input")[1]);
+			}
+			//ctrl+右  =>快进
+			if(e.ctrlKey && keycode==39){
+				audio.currentTime=audio.currentTime+5;
+			}
+			//ctrl+左  =>后退
+			if(e.ctrlKey && keycode==37){
+				audio.currentTime=audio.currentTime-5;
+			}
+		}
+		
+		//播放完毕有两种判断方法：audio.ended
+		//						  audio.currentTime==duration
+		window.setInterval(function(){
+			audio=document.getElementById("audio");
+			if(audio.ended){
+				alert("已经播放完毕");
+				//播放下一首
+				//简单的说，改变src属性值，然后autoplay自动播放
+			}
+		})		
+	</script>
+</body>
+</html>
