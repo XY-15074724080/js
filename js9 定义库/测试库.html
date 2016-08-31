@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>测试库</title>
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<div id="a">a</div>
+	<div id="b">b</div>
+	<div id="c">c</div>
+	<script type="text/javascript">
+		alert(yc.$("a").innerHTML);
+		alert(yc.$("a","b")[1].innerHTML);
+		//alert( yc.$({"a","b"}) );
+	</script>
+</body>
+</html>

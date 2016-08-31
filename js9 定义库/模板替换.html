@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>作业_模板替换</title>
+</head>
+<body>
+	<div id="mydiv"></div>
+	<script type="text/javascript">
+		var template='<table border="{border}">'+'<tr><th>Last</th><td>{last}</td></tr>'+'<tr><th>First</th><td>{first}</td></tr>'+'</table>';
+		//将{xxxx}替换为指定数据
+		var data={
+			"first":"Carl",
+			"last":"Hollywood",
+			"border":10
+		};
+
+		yc.$("mydiv").innerHTML=yc.supplant(template,data);
+	</script>
+</body>
+</html>
