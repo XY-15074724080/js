@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>6_测试在Array扩展的toJSONString()</title>
+		<script type="text/javascript" src="yclib.js"></script>
+	</head>
+	<body>
+		<script>
+			var obj={"name":"zy","age":20};
+			alert(obj.toJSONString());//测试在Object扩展的toJSONString()
+			
+			var arr=new Array();
+			arr[0]={"name":"xy1","age":20};
+			arr[1]={"name":"xy2","age":20};
+			alert(arr.toJSONString());//测试在Array扩展的toJSONString()
+			/*
+			 * [{"name":"xy1","age":"20"},{"name":"xy2","age":"20"}]
+			 */
+		</script>
+	</body>
+</html>

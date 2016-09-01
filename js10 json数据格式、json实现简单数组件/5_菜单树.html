@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2_菜单树</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function TreeItem(text,icon,link){
+			this.text=text;
+			this.icon=icon;
+			this.link=link;
+			this.sonItems=[];
+		}
+		//扩展功能：添加子节点，获取子节点的数量，获取所有的子节点，显示节点
+		TreeItem.prototype={
+			attributes:{//定义属性
+				className:""
+			},
+			addSonItem:function(sonItem){//添加 子节点
+				this.sonItems.push(sonItem);//给数组里添加元素
+			},
+			getSonItemCount:function(){//获取子节点的数量
+				return this.sonItems.length;
+			},
+			getAllSonItem:function(){//获取所有的子节点
+				return this.sonItems;
+			},
+			showItem:function(parentNode){
+				var root;
+				if(this.sonItems.length<=0){//如果没有子节点
+					root=document.createElement("li");
+					if(this.link){
+						var a=document.createElement("A");
+						a.href=this.link;
+						var txt=document.createTextNode(this.text);
+						a.appendChild(txt);
+						root.appendChild(a);
+					}else{
+						var txt=document.createTextNode(this.text);
+						root.appendChild(txt);
+					}
+					parentNode.appendChild(root);
+					return;
+				}
+				root=document.createElement("li");
+				
+				var txt=document.createTextNode(this.text);
+				root.appendChild(txt);
+				var ulnode=document.createElement("ul");
+				root.appendChild(ulnode);
+				for(var i=0;i<this.sonItems.length;i++){
+					var si=this.sonItems[i];
+					si.showItem(ulnode);//这里传了一个参数定义它的父节点
+				}
+				parentNode.appendChild(root);
+			}
+		};
+
+		//这个函数的作用：将 jsonarray中的数据包装到parentNode.sonItem
+		function walk(parentNode,jsonarray){
+			for(var i=0;i<jsonarray.length;i++){
+				var jsonobject=jsonarray[i];
+				var ti=new TreeItem(jsonobject.text,jsonobject.icon,jsonobject.link);
+				parentNode.addSonItem(ti);//用户管理，平台管理，商品管理，订单管理->后台管理
+				if(jsonobject.sonItems!=null&&jsonobject.sonItems.length>0){//如果还有子节点的话，就再调用函数添加一次
+					walk(ti,jsonobject.sonItems);
+				}
+			}
+		}
+
+		var result="[{\"id\":1,\"text\":\"后台管理\",\"icon\":\"star\",\"sonItems\":[{\"id\":2,\"text\":\"用户管理\",\"sonItems\":[{\"id\":6,\"text\":\"用户预览\",\"link\":\"xxxx.com\"},{\"id\":7,\"text\":\"用户预览\",\"link\":\"xxxx.com\"},{\"id\":8,\"text\":\"用户预览\",\"link\":\"xxxx.com\"}]},{\"id\":3,\"text\":\"平台信息\",\"sonItems\":[]},{\"id\":4,\"text\":\"商品管理\",\"sonItems\":[]},{\"id\":5,\"text\":\"订单管理\",\"sonItems\":[]}]}]";
+
+		var jsonarray=eval("("+result+")");//jsonarray
+		var root;
+
+		if(jsonarray!=null&&jsonarray.length>0){
+			var rootobject=jsonarray[0];//根节点	普通对象object，而不是 TreeItem	后台管理
+			root=new TreeItem(rootobject.text,rootobject.icon,rootobject.link);//包装成一个根节点
+			if(rootobject.sonItems!=null&&rootobject.sonItems.length>0){
+				//用户管理
+				walk(root,rootobject.sonItems);
+			}
+		}
+
+		root.showItem(document.body);//表示添加到文本body里面去
+	</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>作业_带过滤的eval</title>
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var obj=yc.parseJson('{"name":"tom","age":20}',function(key,value){
+			if(key=='age'){
+				value=value<0?1:value;//如果年龄的值小于0则过滤为1，不小于0则不需要过滤
+			}
+			return value;
+		});//这里调用yclib库中parseJson函数，传了两个参（一个是需要过滤的对象，另一个是用来执行过滤功能的函数代码）
+		alert(obj.name+"\t"+obj.age);
+
+		var obj2=yc.parseJson('{"name":"smith","age":-50}',function(key,value){
+			return (key=='age'&&value<0)?1:value;
+		});//另一种写法
+		alert(obj2.name+"\t"+obj2.age);
+
+		//更复杂的情况：{"name":"tom","age":20,"sex":"男","province":"湖南","postcode":"12345678"};
+		//一般邮编不需要运算，不需要运算的数字可以用字符串表示
+		////////////////////////////////////////未实现
+		var obj3=yc.parseJson("{'name':'tom','age':20,'address':{'province':'湖南','postcode':'12345678'}}",function(key,value){
+			var result=value;
+			if(typeof(value)=='object'){
+				for(var i in value){
+					if(i=="postcode"){
+						if(value[i].length!=6){
+							value[i]="未知邮编";
+							result=value;
+						}
+					}
+				}
+			}
+			
+			return result;
+		});
+		alert(obj3.name+"\t"+obj3.age+"\t"+obj3.address.postcode);
+	</script>
+</body>
+</html>

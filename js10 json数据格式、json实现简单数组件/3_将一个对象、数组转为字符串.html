@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>3_将一个对象、数组转为字符串</title>
+		<script type="text/javascript" src="yclib.js"></script>
+	</head>
+	<body>
+		<script>
+			var person=new Object();
+			person.name="xy";
+			person.age=20;
+			person.sex="女";
+			
+			alert(person.toString());//[object Object]
+			
+			//需求：给Object类的prototype添加一个功能toJSONString(),将属性的值以json格式输出
+			alert(person.toJSONString());
+			/*
+			 * {"name":"xy",
+				"age":"20",
+				"sex":"女"}
+			 */
+			
+		</script>
+	</body>
+</html>

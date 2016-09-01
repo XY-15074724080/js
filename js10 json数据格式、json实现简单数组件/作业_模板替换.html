@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>作业_模板替换</title>
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<div id="mydiv"></div>
+	<script type="text/javascript">
+		var template='<table border="{border}">'+'<tr><th>Last</th><td>{last}</td></tr>'+'<tr><th>First</th><td>{first}</td></tr>'+'</table>';
+		document.write(template);
+		var data={
+			"first":"Carl",
+			"last":"Hollywood",
+			"border":10 		//替换{border}
+		};
+
+		//template=template.replace("/\{[a-z]+\}/g","data[i][j]");//正则
+		//document.write(template);
+
+		/*yc.$("mydiv").innerHTML=yc.supplant(template,data);//方法一   */
+
+		//{()}  分组
+		var datatemplate=function(template,data){
+			for(var i in data){
+				//i：first,	last,	border
+				template=template.replace("{"+i+"}",data[i]);
+				//=>template.replace("{border}",data["border"]);
+			}
+			return template;
+		}
+		document.write(datatemplate(template,data));//方法二
+	</script>
+</body>
+</html>

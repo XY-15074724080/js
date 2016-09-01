@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>作业一_用JSON数据格式表示数据</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//(1)1,4,68,9	56,1,9,7
+		var jsonarray1=[[1,4,68,9],[56,1,9,7]];
+		var arr1=eval("("+jsonarray1+")");
+		
+		//(2)[abc,true,123,huxu]	[4,5,红网,false]
+		var jsonarray2=[[abc,true,123,huxu],[4,5,红网,false]];
+		var arr2=eval("("+jsonarray2+")");
+		
+		//Address对象包含：city:Beijing	street:Chaoyang Road	postcode:100025
+		var jsonarray3={Address:{city:Beijing,street:Chaoyang Road,postcode:100025}};
+		var arr3=eval("("+jsonarray3+")");
+		
+		//(4)表示user对象属性有姓名name:红网	age:20	pwd:123456	Address(上一题)
+		var jsonarray4={user:{name:"红网",age:20,pwd:123456,Address:{city:Beijing,street:Chaoyang Road,postcode:100025}}};
+		var arr4=eval("("+jsonarray4+")");
+	</script>
+	
+</body>
+</html>
