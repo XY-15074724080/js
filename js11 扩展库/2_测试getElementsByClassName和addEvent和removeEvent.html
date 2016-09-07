@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2_测试getElementsByClassName和addEvent和removeEvent</title>
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<p id="show">hello world</p>
+
+	<div id="div1">
+		<p class="   a b">xxx</p>
+		<p class="  a">yyyy</p>
+		<p class="c a">kkkk</p>
+		<p class="c a b">cccc</p>
+
+		<span class="a">zzz</span>
+	</div>
+	<div id="div2">
+		<span class="a">dddd</span>
+		<a href="" class="a">tttt</a>
+	</div>
+
+	<script type="text/javascript">
+		var r=yc.getElementsByClassName("a","p","div1");
+		alert(r.length);
+
+
+		// var show=function(){
+		// 	alert("hello");
+		// }
+		// yc.addEvent("show","click",show);//添加事件时用了一个函数
+		// yc.removeEvent("show","click",show);//删除事件时用了一个函数
+
+		// yc.addEvent("show","click",function(){  alert("hello"); }  );
+		// yc.removeEvent("show","click",function(){  alert("hello"); }  );//错误，无法移除，因为匿名函数是两个函数
+	</script>
+</body>
+</html>

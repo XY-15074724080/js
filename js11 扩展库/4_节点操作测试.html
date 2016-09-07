@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>4_节点操作测试</title>
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<div id="con">
+		<p id="a">a
+			<span>abc</span>
+			<span>abc</span>
+		</p>
+		<p id="b">b</p>
+		<p id="c">c</p>
+	</div>
+
+	<script type="text/javascript">
+		var newnode=document.createElement("p");
+		var txtnode=document.createTextNode("hello");
+		newnode.appendChild(txtnode);
+
+		//yc.insertAfter(newnode,yc.$("b"));//insertAfter测试
+		//yc.prependChild("con",newnode);//prependChild测试
+		yc.removeChildren("con");//removeChildren测试
+	</script>
+</body>
+</html>
