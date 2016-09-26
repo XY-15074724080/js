@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>禁用样式表</title>
+
+	<style type="text/css">
+		.myclass2{
+			color:green;
+		}
+	</style>
+
+	<link rel="stylesheet" href="main.css" />
+
+	<script type="text/javascript">
+		document.styleSheets[0].disabled=true;//只需要把样式表的disabled属性设为true就可以禁用了
+		document.styleSheets[1].disabled=true;//当禁用一个样式表时，dom将被重布局，并根据对样式的新的计算重绘页面. 
+	</script>
+</head>
+<body>
+	
+	<p class="myclass1 myclass2">hello</p>
+</body>
+</html>

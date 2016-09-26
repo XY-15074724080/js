@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>5_class操作测试</title>
+	<script type="text/javascript" src="yclib.js"></script>
+	<script type="text/javascript">
+		function init(){
+			alert(yc.getClassNames("ab"));//取得元素中类名的数组
+
+			yc.addClassName("ab","a");//给id名为ab的元素中添加一个类a
+
+			alert(yc.getClassNames("ab"));
+
+			alert(yc.hasClassName("ab","a"));//判断id为a的节点有没有a这个类名
+			alert(yc.removeClassName("ab","a"));
+		}
+	</script>
+</head>
+<body onload="init()">
+	
+	<p id="ab" class="f  e g">ppppp</p>
+</body>
+</html>

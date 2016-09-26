@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>6_遍历和搜索样式规则</title>
+	
+
+	<style type="text/css">
+		.myclass2{color:red;}
+		
+	</style>
+	<link rel="stylesheet" type="text/css" href="main.css" />
+	
+	<script type="text/javascript">
+		//取得所有的样式表：document.styleSheets只能取得<link><style>所标识的样式表
+		//getSheets()能取得所有的样式表（包括import）
+		function getSheets(){
+			var styleCollection=[];//样式表集合
+			var indexedStylesheets=0;
+			//先加 <link><style>所标识的样式表
+			for(var i=0;i<document.styleSheets.length;i++){
+				//styleCollection[0]=document.styleSheets[0];
+				//styleCollection[1]=document.styleSheets[1];
+				styleCollection[styleCollection.length]=document.styleSheets[i];//把<link><style>所标识的样式表 添加到styleCollection集合里去
+			}
+			//循环 styleCollection中的每个样式，取import部分
+			while(indexedStylesheets<styleCollection.length){
+				for(var i=indexedStylesheets;i<styleCollection.length;i++){//遍历文档下所有的样式表
+					indexedStylesheets+=1;
+					if(styleCollection[i].cssRules){//W3C
+						for(var x=0;x<styleCollection[i].cssRules.length;x++){//遍历文档下每个样式表的所有规则
+							if(styleCollection[i].cssRules[x].type==3){
+								//是3的话，表明是@import "xxx.css"
+								styleCollection[styleCollection.length]=styleCollection[i].cssRules[x].styleSheet;
+								//把文档下的这个样式表的 规则(import) 的样式添加到样式表集合里面去
+							}
+						}
+					}else if(styleCollection[i].rules){//ie
+						for(var x=0;x<styleCollection[i].imports.length;x++){//遍历每个样式表下的所有import
+							styleCollection[styleCollection.length]=styleCollection[i].imports[x];//把这个样式表下的下标为x的import规则添加的样式表集合里面去
+						}
+					}
+				}
+			}
+			return styleCollection;//返回样式表的集合
+		}
+
+		//searchString：要查的选择器名
+		//exact：true(精确查找) 	false(模糊查找)
+		function searchRule(searchString,exact){
+			var stylesheetlist=getSheets();//获取所有的样式表
+			var rulelist=[];//匹配到的规则列表
+
+			for(var i=0;i<stylesheetlist.length;i++){
+				//取出每个样式表中的规则集合
+				//rules:ie 		cssRules:w3c
+				var ruleSet=stylesheetlist[i].rules || stylesheetlist[i].cssRules;
+				for(var x=0;x<ruleSet.length;x++){//遍历每个规则集合
+					//如果是精确查找，则取出每个rule的selectorText选择器名 判断是否与要查找的选择器名相等
+					console.log(ruleSet[x].selectorText);
+					if(exact && (ruleSet[x].selectorText==searchString) ){
+						rulelist.push(ruleSet[x]);
+					}else if( !exact && (ruleSet[x].selectorText.indexOf(searchString)>-1) ){//如果是模糊查找
+						//缺陷：不能取得引入的样式表里的import
+						rulelist.push(ruleSet[x]);
+					}
+				}
+			}
+			return rulelist;
+		}
+
+		alert( searchRule("myclass",false));
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

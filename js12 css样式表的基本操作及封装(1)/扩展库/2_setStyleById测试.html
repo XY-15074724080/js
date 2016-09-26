@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2_setStyleById测试</title>
+
+	<script type="text/javascript" src="yclib.js"></script>
+
+	<script type="text/javascript">
+		
+		function init(){
+			var newStyle={"color":"red","backgroundColor":"blue"};
+			yc.setStyleById("a",newStyle);//通过id修改单个元素的样式
+
+			var newstyle2={"color":"blue","background-color":"red"};
+			yc.setStyleById("b",newstyle2);
+		}
+	</script>
+</head>
+<body onload="init()">
+
+	<div id="a">hello</div>
+
+	<div id="b">bye</div>
+	
+</body>
+</html>

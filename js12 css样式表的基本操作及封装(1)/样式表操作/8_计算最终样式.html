@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>8_计算最终样式</title>
+
+	<style type="text/css">
+		.myclass{
+			color:red;
+			background-color: blue;
+		}
+		#mydiv{
+			color:blue;
+			background-color: red;
+		}
+	</style>
+
+	<script type="text/javascript">
+		//style 获取到的是一个元素的内联样式，而不能获取继承而来的样式
+		//而一个元素的最终显示效果是由上至下根据DOM树中从根节点至该元素的所有层叠样式计算最终的样式
+		function compute(ele,attr){
+			var eleobj=document.getElementById(ele);
+			var computedStyle;
+			if(eleobj.currentStyle){//IE 	通过 currentStyle 对象获得最终样式.   但 currentStyle 是只读对象，如果希望修改最终样式，需要使用 style 对象方式
+				computedStyle=eleobj.currentStyle;
+			}else{//w3c 	通过document.defaultView.getComputedStyle()方法获取最终样式  	document.defaultView.getComputedStyle( element [, pseudoElt])  
+				//pseudoElt:伪元素 
+				computedStyle=document.defaultView.getComputedStyle(eleobj,null);
+			}
+			return computedStyle[attr];
+		}
+		//注意点：根据不同的浏览器作为最终样式返回的字符串也存在不同。在ie中, 将会返回如width,padding 等属性的度量单位，并且与在样式表中定义这些属性完全相同(如12px). 
+		//对于W3C浏览器，它们将这些属性值转为其他形式的字符串， 如颜色: rgb(0,0,255)
+	</script>
+</head>
+<body>
+	<div class="myclass" id="mydiv">
+		hello
+	</div>
+
+	<input type="button" value="显示最终样式" onclick="alert(compute('mydiv','color'))" />
+</body>
+</html>

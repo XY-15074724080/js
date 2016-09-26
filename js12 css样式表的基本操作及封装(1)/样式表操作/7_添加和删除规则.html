@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>7_添加和删除规则</title>
+
+	<script type="text/javascript">
+		//在创建样式规则前，必须要创建一个容纳这些样式规则的样式表.也可以将创建的样式规则添加到已有的样式表中
+		function addNewRule(selector,ruleText){
+			var cssObj;
+			if(document.styleSheets.length>0){//判断文档下有没有样式表，有则将创建的样式规则添加到已有的样式表中
+				cssObj=document.styleSheets[0];//已有的样式表
+			}else{//如果文档下没有样式表，创建一个容纳这些样式规则的样式表
+				if(document.createStyleSheet){//在ie中，可以使用 document.createStyleSheet([sURL][,iIndex])方法添加多达31个附加样式表
+					cssObj=document.createStyleSheet();
+				}else{//在非ie中，应先创建一个link对象，并使用appendChild()方法以手动方式将其附加到DOM中. 注意: <link>中的type和rel很重要
+					var ss=document.createElement("style");
+					ss.type="text/css";
+					document.getElementsByTagName("head")[0].appendChild(ss);//添加到最后一个		文档下<head>可以有多个，这里取TagName所以
+					cssObj=document.styleSheets[0];
+				}
+			}
+			if(cssObj.addRule){//ie
+				cssObj.addRule(selector,ruleText);
+			}else{//w3c
+				cssObj.insertRule(selector+"{"+ruleText+"}",0);
+				//insertRule(rule,index)
+			}
+		}
+
+		function delRule(){
+			var styleObj=document.styleSheets[0];//取出第一个样式表(这里之前只添加了一个)
+			if(styleObj.cssRules){//w3c用deleteRule(index)
+				styleObj.deleteRule(styleObj.cssRules.length-1);//要删除的规则 在 cssRules数组中 的下标
+			}else{//ie用removeRule(index)
+				styleObj.removeRule(styleObj.rules.length-1);
+			}
+		}
+
+		addNewRule(".a","color:red");
+		//delRule();
+	</script>
+</head>
+<body>
+	
+	<p class="a">hello</p>
+</body>
+</html>

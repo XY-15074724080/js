@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>移除样式表</title>
+	<style type="text/css">
+		.myclass2{
+			color:red;
+		}	
+	</style>
+
+	<link rel="stylesheet" href="main.css" />
+
+	<script type="text/javascript">
+		function removeSheet(index){
+			var sheet=document.styleSheets[index];
+			console.log(sheet);//-> StyleSheet null得到的是一个样式表
+			var container=sheet.owningElement || sheet.ownerNode;//判断是ie还是w3c
+			//				ie 						w3c
+			//从 styleSheet 对象中获得对 style 对象或 link 对象的 dom 引用.
+			//在 ie 中该 dom 为 owningElement 对象. 
+			//在 W3C 中为 ownerNode 对象. 
+			// ownerNode:   返回将该样式表与文档相关联的节点
+			if(container){//如果它的父规则(<style>)存在，通过移除该节点来移除样式表
+				container.parentNode.removeChild(container);//找到父规则的父节点(这里是<head>)来删除它自己
+			}
+		}
+
+		removeSheet(0);//删除第一个样式表
+	</script>
+</head>
+<body>
+	<p class="myclass1 myclass2">kfkyfskfbs</p>
+</body>
+</html>

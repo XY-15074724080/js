@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>添加样式表</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function addSheet(cssURL){
+			if(document.createStyleSheet){//ie方法  createStyleSheet属性添加
+				document.createStyleSheet(cssURL);//会自动帮我们生成一个<link>标签放到<head>中去
+			}else{//w3c方法  用DOM添加样式表
+				var ss=document.createElement("link");
+				ss.type="text/css";
+				ss.rel="stylesheet";
+				ss.href=cssURL;
+				document.getElementsByTagName("head")[0].appendChild(ss);//html的head可以有多个，这里取它的第一个head把新增的<link>添加进去
+			}
+		}
+
+		addSheet("main.css");
+	</script>
+
+	<p class="myclass1">abc</p>
+</body>
+</html>

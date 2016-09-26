@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_setStylesByTagName测试</title>
+	<script type="text/javascript" src="yclib.js"></script>
+	<script type="text/javascript">
+		//通过标签名修改多个样式
+		function init(){//setStylesByTagName(tagname,styles,parent)
+			//tagname：标签
+			//styles：样式对象	
+			//parent：父标签的id号
+			var newStyle={"color":"red","backgroundColor":"blue"};
+			yc.setStylesByTagName("div",newStyle,"a");//修改id为a的节点的标签为div的节点的样式
+
+			var newstyle2={"color":"blue","background-color":"red"};
+			yc.setStylesByTagName("span",newstyle2,"c");
+		}
+	</script>
+</head>
+<body onload="init()">
+	
+	<div id="a">hello
+		<div id="b">bye</div>
+	</div>
+
+	<p id="c">hello
+		<span id="a">bye</span>
+		<span id="b">hahaha</span>
+	</p>
+
+	<span id="e">bye2222222222</span>
+</body>
+</html>

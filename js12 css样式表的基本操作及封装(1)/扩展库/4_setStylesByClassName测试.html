@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>4_setStylesByClassName测试</title>
+
+	<script type="text/javascript" src="yclib.js"></script>
+
+	<script type="text/javascript">
+		//通过类名修改多个元素的样式
+		function init(){//setStylesByClassName(parent,tag,className,styles)
+			//parent：父元素的id    tag：标签名   className：标签上的类名	styles：样式对象
+			var newstyle={"color":"red","backgroundColor":"blue"};
+			yc.setStylesByClassName("k","span","c2",newstyle);
+
+			
+		}
+	</script>
+</head>
+<body onload="init()">
+	
+	<div id="a">hello
+		<div id="b">bye</div>
+	</div>
+
+	<p id="c">hello
+		<span id="a1" class="c2">bye</span>
+		<span id="b1" class="c2">hahaha</span>
+	</p>
+
+	<p id="k">hello
+		<span id="a2" class="c3">bye</span>
+		<span id="b2" class="c2">hahaha</span>
+	</p>
+
+	<span id="a3" class="c1">bye2222222222</span>
+
+	<p class="c1">pppppppp</p>
+</body>
+</html>

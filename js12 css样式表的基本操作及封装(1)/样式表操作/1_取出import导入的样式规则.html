@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>1_取出import导入的样式规则</title>
+
+	<link rel="stylesheet" type="text/css" href="main.css" />
+
+	<style type="text/css">
+		@import "1_1.css";
+		@import "1_3.css";
+		.c{
+			color:green;
+		}
+	</style>
+
+	<style type="text/css">
+		@import "1_2.css";
+		.d{
+			color:green;
+		}
+	</style>
+
+	<script type="text/javascript">
+		function show(){
+//			var importrules=document.styleSheets[0].imports[0].rules;		//ie
+//			alert( document.styleSheets[0].imports.length );
+			
+//			var importrules=document.styleSheets[0].cssRules[0].styleSheet.cssRules;			//W3C
+//			alert(document.styleSheets[0].cssRules.length);
+
+			var importrules;
+			if(document.styleSheets[0].cssRules){//W3C方法 取出import导入的样式规则
+				importrules=document.styleSheets[0].cssRules[0].styleSheet.cssRules;//这里取的是<link>标记里面import导入的样式表
+				//取的是文档的 第一个样式表下的 第一个css规则下的 样式表(import导入的)的规则
+			}else{//IE方法 取出import导入的样式规则
+				importrules=document.styleSheets[0].imports[0].rules;//这里取的是<link>标记里面import导入的样式表
+				//取的是文档的 第一个样式表下的 第一个import 导入的样式表 的规则
+			}
+			//alert(importrules.length);//1
+		
+
+
+
+			//求出所有样式表的数量===================计算样式表数量包括import
+			//alert(document.styleSheets.length);//3
+			var stylesheetcount=0;
+			stylesheetcount+=document.styleSheets.length;//<style>和<link>的数量
+			if(document.styleSheets[0].rules){//如果是ie
+				for(var i=0;i<document.styleSheets.length;i++){//遍历文档所有的样式表
+					stylesheetcount+=document.styleSheets[i].imports.length;//添加每个样式表下import的数量
+				}
+			}else{//如果是W3C
+				for(var i=0;i<document.styleSheets.length;i++){//遍历文档下所有的样式表
+					var cssRules=document.styleSheets[i].cssRules;//取出每个样式表下所有的规则
+					for(var j=0;j<cssRules.length;j++){//遍历每条规则
+						var rule=cssRules[j];
+						if(rule.type==3){//如果规则的类型为@import ->  == 3
+							stylesheetcount++;
+						}
+					}
+				}
+			}
+			alert("样式表的数量："+stylesheetcount);//7
+		}
+	</script>
+</head>
+<body onload="show()">
+	
+</body>
+</html>
