@@ -1,0 +1,14 @@
+@charset "utf-8";
+/* CSS Document */
+#slideshow{
+	width:100px;
+	height:100px;
+	position:relative;
+	/*
+		overflow四个值：visible：不裁剪，全部内容可见
+					  hidden：溢出部分隐藏
+					  scroll：添加滚动条
+					  auto：自动
+	*/
+	overflow:hidden;
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>6_sqlite小案例</title>
+	<script type="text/javascript" src="yclib.js"></script>
+	<script type="text/javascript">
+		function del(obj){
+			var tr=obj.parentNode.parentNode;
+			var tbody=tr.parentNode;
+			tbody.removeChild(tr);
+			if(window.openDatabase){
+				db.transaction(function(transaction){
+					transaction.executeSql("delete from student where sid="+tr.firstChild.innerHTML,[]);
+				});
+			}
+		}
+	</script>
+	
+</head>
+<body>
+	<h1>添加学生</h1>
+	<hr/>
+	<p>学生名：<input type="text" name="uname" id="uname" /></p>
+	<p>年龄：<input type="text" name="age" id="age" /></p>
+	
+	<input type="button" id="btn" value="添加" />
+
+	<hr/>
+
+	<table border="1" width="500px">
+		<thead>
+			<tr>
+				<td>学生号</td>
+				<td>学生名</td>
+				<td>年龄</td>
+				<td>操作(删除)</td>
+			</tr>
+		</thead>
+		<tbody id="content">
+
+		</tbody>
+	</table>
+
+	<script type="text/javascript">
+
+		var db;
+		if(window.openDatabase){
+			db=openDatabase("stuInfo",1.0,"testdb",10000);
+			db.transaction(function(transaction){//transacion  事务
+				//transaction.executeSql("drop table student");
+				transaction.executeSql("create table student(sid int primary key,sname text,age int)",[]);
+				
+
+			});
+		}
+
+		var count=0;
+		window.onload=function(){
+			yc.addEvent("btn","click",function(){
+				if(!db){
+					return ;
+				}
+				//1、取值  sname ,age
+				var sname=yc.$("uname").value;
+				var age=yc.$("age").value;
+				var deltd="<input type='button' id='bt' value='操作(删除)' onclick='del(this)' />";
+				//2、将值添加到  table去
+				var tr=document.createElement("tr");
+				var inp=[sname,age,deltd];
+						
+				for(var i=0;i<inp.length;i++){
+				 	var td=document.createElement("td");
+				 	td.innerHTML=inp[i];
+				 	tr.appendChild(td);
+				}
+
+				var td1=document.createElement("td");
+				var txt1=document.createTextNode(++count);
+				td1.appendChild(txt1);
+				yc.prependChild(tr,td1);
+
+				var tbody=document.getElementsByTagName("tbody")[0];
+				tbody.appendChild(tr);
+				//3、添加到数据库
+				
+				db.transaction(function(transaction){
+				//transacion  事务
+					transaction.executeSql("insert into student(sid,sname,age) values(?,?,?)",[count,sname,age]);//  ?:占位符
+				});
+				
+			});	
+		}
+	</script>
+</body>
+</html>

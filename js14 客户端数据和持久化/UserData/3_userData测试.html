@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_userData测试</title>
+	<script type="text/javascript" src="UserData.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		window.onload=function(){
+			UserData.set("name","zy");
+			alert(UserData.get("name"));
+
+			UserData.del("name");
+
+			alert(UserData.get("name"));
+		};
+	</script>
+</body>
+
+</html>

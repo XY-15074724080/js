@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>W3C的DOM存储</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//sessionStorage只能在当前页面获取
+		//sessionStorage用于本地存储一个会话（session）中的数据，这些数据只有在同一个会话中的页面才能访问并且当会话结束后数据也随之销毁。因此sessionStorage不是一种持久化的本地存储，仅仅是会话级别的存储。
+		// alert("最开始页面加载时取："+sessionStorage.hello);//undefined
+		// sessionStorage["hello"]="world2";
+		// alert(sessionStorage.hello);//world2
+		//第一次打开页面按顺序弹出undefined和world2，刷新之后按顺序弹出world2和world2，关闭页面之后重新打开会弹出undefined和world2
+
+
+
+
+
+		//而localStorage用于持久化的本地存储，除非主动删除数据，否则数据是永远不会过期的。
+		alert("最开始页面加载时取："+localStorage.hello);
+		localStorage["hello"]="zy";
+
+		alert(localStorage.hello);
+		//第一次打开页面按顺序弹出undefined和zy，刷新之后按顺序弹出zy和zy，关闭页面之后重新打开还是按顺序弹出zy和zy
+
+
+
+
+		// 浏览器的支持除了IE７及以下不支持外，其他标准浏览器都完全支持(ie及FF需在web服务器里运行)，值得一提的是IE总是办好事，例如IE7、IE6中的UserData其实就是javascript本地存储的解决方案
+	</script>
+</body>
+</html>
