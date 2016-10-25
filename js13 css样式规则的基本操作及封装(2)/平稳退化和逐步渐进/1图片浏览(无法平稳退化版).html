@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>图片浏览(无法平稳退化版)</title>
+        <link rel="stylesheet" href="CSS/layout.css" media="screen" />
+        <script type="text/javascript" src="js/yclib.js" ></script>
+    </head>
+
+    <body><!--一旦网站禁用js，则所有的js内容加载不出来-->
+    	<h1>图片浏览</h1>
+    	<ul>
+        	<li>
+            	<a href="#" onClick="showPic(this,'images/1.jpg');return false;" title="桃花" >桃花</a><!--return false;是为了阻止a标签的href的执行，这里如果网站禁用了js，则点击事件不会触发，而会执行a标签的href属性，而无法达到平稳退化的效果-->
+            </li>
+            <li>
+            	<a href="#" onClick="showPic(this,'images/2.jpg');return false;" title="玫瑰" >玫瑰</a>
+            </li>
+        </ul>
+        <img id="placeholder" src="images/placeholder.png" alt="我的图片库" />
+        <p id="description">请选择一张图片</p>
+        <script src="js/showPic1.js"></script>
+    </body>
+</html>

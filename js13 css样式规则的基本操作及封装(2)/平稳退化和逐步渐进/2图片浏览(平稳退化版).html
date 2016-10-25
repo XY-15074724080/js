@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>图片浏览(平稳退化版)</title>
+        <link rel="stylesheet" href="CSS/layout.css" media="screen" />
+        <script type="text/javascript" src="js/yclib.js" ></script>
+    </head>
+
+    <body><!--一旦网站禁用js，不会执行js而会退化执行原来标签所设置的属性-->
+    	<h1>图片浏览</h1>
+    	<ul>
+        	<li>
+            	<a href="images/1.jpg" onClick="showPic(this);return false;" title="桃花" >桃花</a><!--return false;是为了阻止a标签的href的执行，而如果网站阻止了js，就不会执行这部分，会直接触发a标签的href属性-->
+            </li>
+            <li>
+            	<a href="images/2.jpg" onClick="showPic(this);return false;" title="玫瑰" >玫瑰</a>
+            </li>
+        </ul>
+        <img id="placeholder" src="images/placeholder.png" alt="我的图片库" />
+        <p id="description">请选择一张图片</p>
+        <script src="js/showPic2.js"></script>
+    </body>
+</html>
