@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>window_name属性_页面访问次数计算</title>
+
+	<script type="text/javascript">
+		
+		//两个页面之间不能实现跨域
+		/*if(window.name){
+			var val=parseInt(window.name);
+			val+=1;
+			window.name=val;
+		}else{
+			window.name=1;
+		}
+
+		document.write("页面被访问了："+window.name+"次");*/
+		
+	</script>
+</head>
+<body>
+	<iframe id="otherwindow"></iframe>
+	<script type="text/javascript">
+		//跨域计算
+		window.frames[0].name=100;//frames: 浮动框架
+	</script>
+</body>
+</html>

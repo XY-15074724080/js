@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>考试系统</title>
+	<script type="text/javascript" src="js/yclib.js"></script>
+	<script type="text/javascript" src="js/SqlHelper.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+</head>
+<body>
+	<div id="question">
+
+	</div>
+	<script type="text/javascript">
+		sqlhelper.select("question","*","",[],get);
+
+		function get(rows){
+			if(!rows ||	rows==false){
+				alert("查询题目失败");
+				return;
+			}
+			var queStr="[";
+			for(var i=0;i<rows.length;i++){
+				queStr+="[";
+				for(var tname in rows.item(i)){
+					if(rows.item(i).hasOwnProperty(tname)){
+						queStr+="'"+rows.item(i)[tname]+"',";
+					}
+				}
+				queStr=queStr.substr(0,queStr.length-1);
+				queStr+="],";
+			}
+			queStr=queStr.substr(0,queStr.length-1);
+			queStr+="]";
+			console.log(queStr);
+			que=eval(queStr);
+			allque=new ShowQuestions(que);
+			allque.showque();
+		}
+	</script>
+</body>
+</html>

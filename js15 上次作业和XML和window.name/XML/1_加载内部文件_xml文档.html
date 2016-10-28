@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>1_加载内部文件_xml文档</title>
+</head>
+<body>
+	<p id="result"></p>
+
+	<script type="text/javascript">
+		function parseXML(str){
+			var xmlDoc;
+			try{
+				xmlDoc = new ActiveXObject("Microsoft.XMLDOM");//ie
+				xmlDoc.async = false;
+				xmlDoc.loadXML(str);
+			}catch(e){
+				try{
+					var parser = new DOMParser();//w3c
+					xmlDoc = parser.paseFromString(str,"text/xml");//将字符串变成XML文件
+				}catch(x){
+					alert(x.message);
+					return;
+				}
+			}
+			return xmlDoc;
+		}
+
+		var xmlStr="<customer><name>张三</name><birthdate>March 10,1980</birthdate><email>abc@qq.com</email><phone>15378364855</phone></customer>"
+
+		var xmlDOM = parseXML(xmlStr);
+
+		document.getElementById("result").innerHTML = xmlDOM.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+	</script>
+</body>
+</html>

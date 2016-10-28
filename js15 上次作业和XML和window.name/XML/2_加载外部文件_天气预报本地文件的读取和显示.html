@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>2_加载外部文件_天气预报本地文件的读取和显示</title>
+</head>
+<body>
+	<h1>天气预报本地文件的读取和显示</h1>
+	<p id="cityname"></p>
+	<p id="weather"></p>
+	<p id="xray"></p>
+	<p><img id="weapic" src="" /></p>
+
+	<script type="text/javascript">
+		function loadXML(file){
+			try{
+				xmlDoc=new ActiveXObject("Microsoft.XMLDOM");//Microsoft.XMLDOM  通用版本的xml
+				xmlDoc.async=false;//将加载方式设为同步
+				xmlDoc.load(file);//与加载xml字符串区别：前面用的是 loadXML（字符串）
+			}catch(e){
+				try{
+					xmlDoc=document.implementation.createDocument("","",null);
+					xmlDoc.async=false;
+					xmlDoc.load(file);
+				}catch(e){
+					try{
+						var xmlhttp = new window.XMLHttpRequest();
+						xmlhttp.open("GET",file,false);
+						xmlhttp.send(null);
+						xmlDoc = xmlhttp.responseXML.documentElement;
+					}catch(e){
+						alert("您的浏览器不能正常加载文件。请切换到兼容模式，或者更换浏览器");
+					}
+				}
+			}
+			return xmlDoc;
+		}
+
+		var xmlDoc = loadXML("hengyang.xml");//外部本地文件
+
+		document.getElementById("cityname").innerHTML = xmlDoc.getElementsByTagName("string")[0].childNodes[0].nodeValue;
+		document.getElementById("weather").innerHTML = xmlDoc.getElementsByTagName("string")[4].childNodes[0].nodeValue;
+		document.getElementById("xray").innerHTML = xmlDoc.getElementsByTagName("string")[6].childNodes[0].nodeValue;
+		document.getElementById("weapic").innerHTML = xmlDoc.getElementsByTagName("string")[10].childNodes[0].nodeValue;
+	</script>
+</body>
+</html>
