@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" >
+<xsl:output method='html' version='1.0' encoding='UTF-8' indent='yes' />
+<!--xsl:stylesheet: 指令 指明样式--><!--xmlns:xsl: 声明了一个命名空间-->
+<!--xsl:output: 指令 输出指令-->
+<!--indent='yes': 自动缩进-->
+<xsl:template match="/"><!--template: 模板文件-->
+	<h2>客户列表</h2>
+	<table border="1">
+		<tr>
+			<th>客户名</th>
+			<th>Email</th>
+			<th>生日</th>
+			<th>亲人</th>
+		</tr>
+
+		<xsl:for-each select="customers/customer">
+			<tr><!--xsl:for-each: 循环指令-->
+				<td><xsl:value-of select="name" /></td>
+				<td><xsl:value-of select="email" /></td>
+				<td><xsl:value-of select="birthdate" /></td>
+				<td><xsl:for-each select="relatives/relative">
+					<xsl:value-of select="name" />,
+				</xsl:for-each> </td><!--这里循环多个，所以加上逗号-->
+			</tr>
+		</xsl:for-each>
+	</table>
+
+</xsl:template>
+</xsl:stylesheet>

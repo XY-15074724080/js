@@ -1,0 +1,155 @@
+*{
+	padding: 0;
+	margin:0 auto;
+}
+body{
+	background:url(images/background.jpg) no-repeat;
+	background-size: cover;
+}
+a{
+	text-decoration: none;
+}
+.header{
+	width:99%;
+	height:80px;
+	background-color:#000;
+	opacity: 0.3;
+	color:#FF0;
+	font-family:"仿宋";
+	line-height:80px;
+	text-align:center;
+	border-radius:10px;
+}
+.middle{
+	width:100%;
+	height:550px;
+}
+.zhuangtai{
+	width:30%;
+	height:550px;
+	background-color:black;
+	opacity:0.3;
+	border-radius:20px;
+	margin-top:20px;
+	margin-left:5px;
+	float:left;
+}
+
+#cityname{
+	display:block;
+	font-size:40px;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+	word-spacing:.5em;
+	color:#FF0;
+	margin-top:20px;
+	font-family:"Adobe 楷体 Std R";
+}
+#date{
+	display:block;
+	font-size:24px;
+	word-spacing:.3em;
+	color:#CF9;
+	text-align:center;
+	padding:0 20px;
+	margin-top:20px;
+	font-family:"微软雅黑";
+}
+#descripe{
+	display:block;
+	font-size:24px;
+	word-spacing:.2em;
+	color:#C63;
+	text-align:center;
+	padding:0 20px;
+	margin-top:10px;
+	font-family:"微软雅黑";
+}
+#wendu{
+	display:block;
+	font-size:24px;
+	word-spacing:.2em;
+	color:#C63;
+	text-align:center;
+	padding:0 20px;
+	font-family:"微软雅黑";
+}
+#weapic{
+	display:block;
+	background-size:cover;
+}
+#weather{
+	display:block;
+	font-size:18px;
+	height:60px;
+	word-spacing:.2em;
+	color:#C63;
+	text-align:center;
+	padding:0 20px;
+	margin-top:20px;
+	font-family:"微软雅黑";
+}
+#xray{
+	display:block;
+	font-size:18px;
+	word-spacing:.2em;
+	color:#C63;
+	text-align:center;
+	padding:0 22px;
+	font-family:"微软雅黑";
+}
+
+.sevendays{
+	width:68%;
+	height:550px;
+	float:right;
+	background-color:black;
+	opacity:0.3;
+	border-radius:20px;
+	margin-top:20px;
+	margin-right:5px;
+	margin-bottom:10px;
+}
+.sevendays .miaoshu{
+	font-size:40px;
+	height:50px;
+	line-height:50px;
+	text-align:center;
+	letter-spacing:.5em;
+	color:#FF0;
+	margin-top:20px;
+	font-family:"Adobe 楷体 Std R";
+}
+
+table{
+	width:700px;
+	height:300px;
+	color:#fff;
+	text-align: center;
+	margin-top:30px;
+}
+
+.more{
+	width:100%;
+	height:40px;
+}
+.more a{
+	display: block;
+	height:40px;
+	line-height: 40px;
+	color:#fff;
+	font-size: 24px;
+	margin-top:40px;
+	letter-spacing: .5em;
+	text-align: center;
+}
+.linePic{
+	width:99%;
+	height:550px;
+	background-color:black;
+	opacity:0.3;
+	border-radius:20px;
+	margin-top:40px;
+	margin-bottom: 10px;
+}

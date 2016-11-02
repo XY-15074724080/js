@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>5_使用XPATH技术查询xml中的数据</title>
+</head>
+<body>
+	<p id="result"></p>
+
+	<script type="text/javascript">
+		/*
+		 * XPath即为XML路径语言，它是一种用来确定XML（标准通用标记语言的子集）文档中某部分位置的语言。XPath基于XML的树状结构，提供在数据结构树中找寻节点的能力。
+		 * XPath 是一门在 XML 文档中查找信息的语言。XPath 可用来在 XML 文档中对元素和属性进行遍历。XPath 是 W3C XSLT 标准的主要元素，并且 XQuery 和 XPointer 同时被构建于 XPath 表达之上。
+		 * XPath使用路径表达式在 XML 文档中选取节点。节点是通过沿着路径(path)或者 步(step) 来选取的。如"/"表示文档节点,"."表示当前节点,而".."则表示当前节点的父节点.
+		 */
+		function parseXML(str){
+			var xmlDoc;
+			try{
+				xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+				xmlDoc.async = false;
+				xmlDoc.loadXML(str);
+			}catch(e){
+				try{
+					var parser = new DOMParser();
+					xmlDoc = parser.parseFromString(str,"text/xml");//将字符串变成XML文件
+				}catch(x){
+					alert(x.message);
+					return;
+				}
+			}
+			return xmlDoc;
+		}
+
+		var xmlStr="<customers><customer id='1'><name>张三</name><birthdate>March 10,1980</birthdate><email>abc@qq.com</email><phone>15378364855</phone></customer><customer id='2'><name>张三</name><birthdate>March 10,1980</birthdate><email>abc@qq.com</email><phone>15378364855</phone></customer></customers>";
+
+		//将字符串 xmlStr 变成 xml 的document对象 -> 序列化
+		var xmlDOM = parseXML(xmlStr);// xmlDOM.xml -> customer根节点
+
+		function selectXMLNodes(xmlDoc,xpath){
+			if('\v' == 'v'){//IE
+				//我们若使用new ActiveXObject("Microsoft.XMLDOM")则需要注意的是：因为早期的XMLDOM的SelectionLanguage属性默认是正则表达式，不是XPath语言。所以需要指定这样一条语句xmlDoc.setProperty("SelectionLanguage", "XPath"); 以支持XPath查询表达式。
+				xmlDoc.setProperty("SelectionLanguage","XPath");//将当前xml文档的查找方式改为 xpath
+				return xmlDoc.documentElement.selectNodes(xpath);//返回搜索到的节点
+			}else{//W3C
+				//为了执行xpath查询，需要使用XPathEvaluator对象，你可以生成一个新的对象也可以使用内置的对象，如果生成一个新的对象就要初始化XPathEvaluator。
+				var evaluator=new XPathEvaluator();
+				//evaluate()函数返回的信息完全依赖于请求的结果类型。
+				var resultSet = evaluator.evaluate(xpath,xmlDoc,null,XPathResult.ORDERED_NODE_ITERATOR_TYPE,null);//XPathResult.ORDERED_NODE_ITERATOR_TYPE返回匹配节点的集合，顺序和文档中的一样
+				//通过xpath解析的结果是一个集合
+				var finalArray = [];
+				if(resultSet){
+					var el = resultSet.iterateNext();//循环解析到的结果
+					while(el){
+						finalArray.push(el);
+						el = resultSet.iterateNext();//再次循环
+					}
+					return finalArray;
+				}
+				/*
+					iterateNext() 方法返回与 XPath 查询匹配的下一个节点，如果所有匹配节点都已经返回了，则为 null。
+					当 XPathResult 是 UNORDERED_NODE_ITERATOR_TYPE 或 ORDERED_NODE_ITERATOR_TYPE 的时候使用这个方法。如果类型是有序的，节点按照它们在文档中出现的顺序返回，否则，它们按照任意顺序返回。
+					如果 invalidIteratorState 属性为 true，文档已经被修改了，这个方法抛出异常。 
+				*/
+			}
+		}
+		//这样查出来的结果是一个dom节点，要按dom来操作
+		var nodelist = selectXMLNodes(xmlDOM,'/customers/customer[@id = \"1\"]');//xpath   /customers/customer: 相对路径
+		//alert(nodelist[0].innerHTML);
+		//将查找到的xml显示出来
+		//将 xml 的document对象转为 string 字符串
+		if(xmlDOM.xml){//ie方法
+			//document.getElementById("result").value = xmlDOM.xml; // -> 报错
+				document.getElementById("result").innerHTML = nodelist[0].xml;//因为document.getElementById("result")取到的是p标签，而p标签是行级标签，所以不能使用value属性来设值，需要使用innerHTML来添加
+		}else{
+			var serializer = new XMLSerializer();//XMLSerializer: 浏览器写好的内置对象  -> 接口
+				document.getElementById("result").innerHTML = serializer.serializeToString(nodelist[0],"text/xml");
+			}
+
+		
+	</script>
+</body>
+</html>

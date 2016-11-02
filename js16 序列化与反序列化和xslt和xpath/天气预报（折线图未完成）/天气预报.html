@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>天气预报</title>
+	<link rel="styleSheet" type="text/css" href="index.css" />
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<h1 class="header">天气预报本地文件的读取和显示</h1>
+	<div class="middle">
+		<div class="zhuangtai">
+			<p id="cityname"></p>
+			<p id="date"></p>
+			<p><span id="descripe"></span><img id="weapic" src="images/weather/a_0.gif" /><span id="wendu"></span></p>
+			<p id="weather"></p>
+			<p id="xray"></p>
+		</div>
+
+		<div class="sevendays">
+			<h1 class="miaoshu">未来五天温度天气</h1>
+			<div id="Content">
+				<table border="1" cellpadding="0" cellspacing="0">
+					<thead id="thead">
+
+					</thead>
+					<tbody id="tbody">
+
+					</tbody>
+				</table>
+				<p class="more"><a href="#">查询更多>></a></p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="linePic">
+		<canvas id="canvas">
+				您的浏览器不支持此功能，请更新浏览器	
+		</canvas>
+	</div>
+	
+	<script type="text/javascript" src="drawMes.js"></script>
+	<!--<script type="text/javascript">
+		function drawline(start_x,start_y,final_x,final_y){
+			context.save();
+			context.strokeStyle="rgb(230,10,10)";
+			context.beginPath();
+			context.moveTo(start_x,start_y);
+			context.lineTo(final_x,final_y);
+			context.closePath();
+			context.lineWidth=10;//设置画笔的粗细
+			context.stroke();//显示到canvas里面
+		}
+
+		var canvasWidth=500;
+		var canvasHeight=canvasWidth;
+		var canvas=document.getElementById("canvas");
+		var context=canvas.getContext("2d");
+		canvas.width=canvasWidth;
+		canvas.height=canvasHeight;
+	</script>-->
+</body>
+</html> 

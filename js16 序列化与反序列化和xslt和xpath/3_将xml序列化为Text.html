@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>3_将xml序列化为Text</title>
+</head>
+<body>
+	<p id="result"></p>
+
+	<script type="text/javascript">
+		function parseXML(str){
+			var xmlDoc;
+			try{
+				xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+				xmlDoc.async = false;
+				xmlDoc.loadXML(str);
+			}catch(e){
+				try{
+					var parser = new DOMParser();
+					xmlDoc = parser.parseFromString(str,"text/xml");//将字符串变成XML文件
+				}catch(x){
+					alert(x.message);
+					return;
+				}
+			}
+			return xmlDoc;
+		}
+
+		var xmlStr="<customer><name>张三</name><birthdate>March 10,1980</birthdate><email>abc@qq.com</email><phone>15378364855</phone></customer>"
+
+		//将字符串 xmlStr 变成 xml 的document对象 -> 序列化
+		var xmlDOM = parseXML(xmlStr);// xmlDOM.xml -> customer根节点
+
+		//将 xml 的document对象转为 string 字符串
+		if(xmlDOM.xml){//ie方法
+			//document.getElementById("result").value = xmlDOM.xml; // -> 报错
+				document.getElementById("result").innerHTML = xmlDOM.xml;//因为document.getElementById("result")取到的是p标签，而p标签是行级标签，所以不能使用value属性来设值，需要使用innerHTML来添加
+		}else{
+			var serializer = new XMLSerializer();//XMLSerializer: 浏览器写好的内置对象  -> 接口
+			document.getElementById("result").innerHTML = serializer.serializeToString(xmlDOM,"text/xml");
+		}
+		
+	</script>
+</body>
+</html>

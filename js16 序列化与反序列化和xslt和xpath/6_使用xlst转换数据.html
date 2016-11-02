@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>6_使用xlst转换数据</title>
+</head>
+<body>
+	<div id="result"></div>
+
+	<script type="text/javascript">
+		function loadXML(file){
+			try{//ie
+				xmlDoc=new ActiveXObject("Microsoft.XMLDOM");//Microsoft.XMLDOM  通用版本的xml
+				xmlDoc.async=false;//将加载方式设为同步
+				xmlDoc.load(file);//与加载xml字符串区别：前面用的是 loadXML（字符串）
+			}catch(e){
+				try{
+					//下列代码引用XML解析器
+					xmlDoc=document.implementation.createDocument("","",null);//其中：implementation属性可以返回与当前文档相关的DOMImplementation接口，该接口是一个特殊的用于提供服务的接口，可以控制操作一篇文档。DOMImplementation接口提供很多方法，可以用来操作独立于任何特定的文档对象模型实例。DOMImplementation接口中常用的方法有hasFeature()、createDocumentType()和createDocument()。其中，
+					//creatDocument()方法可以创建一个指定类型的XML文档对象。
+					//hasFeature()方法是否可执行指定的特性和版本。
+					//createDocumentType()创建空的 DocumentType 节点。
+					
+					//createDocument(qualifiedName,publicId,systemId)
+					//其中参数解析如下：
+					//qualifiedName：即url。用于创建文档元素的命名空间URL
+					//publicId:要创建文档元素的限定名称。
+					//systemId:要创建的文档类型，可以为null
+					//在使用createDocument()方法创建了一个XML文档对象之后，就可以使用以下语句设置加载文档的方式，这与IE浏览器类似。同样async属性并不是w3c中的所规定的属性，但在Opear等浏览器上都能使用。
+					//xmldoc.async = false;
+					//
+					//最后，再使用以下语句加载XML文档。
+					//xmlDoc.load(index.xml);
+					xmlDoc.async=false;
+					xmlDoc.load(file);
+				}catch(e){
+					try{
+						var xmlhttp = new window.XMLHttpRequest();
+						xmlhttp.open("GET",file,false);
+						xmlhttp.send(null);
+						xmlDoc = xmlhttp.responseXML.documentElement;
+					}catch(e){
+						alert("您的浏览器不能正常加载文件。请切换到兼容模式，或者更换浏览器");//chrome不支持此文档
+					}
+				}
+			}
+			return xmlDoc;
+		}
+
+		var xmlDOM = loadXML("data.xml");
+		var xslDOM = loadXML("xsl.xml");
+
+		if('\v' == 'v'){//ie8以下支持
+			var resultDocument = xmlDOM.transformNode(xslDOM);//transformNode() 方法使用 XSLT 把一个节点转换为一个字符串
+			//这个特定于 IE 的方法根据一个 XSLT 样式表指定的规则来转换一个 Node 及其子孙，并将结果作为一个未解析的字符串返回。
+			//这个 transformNode() 方法只在 XML 文档节点上存在，在 HTML 文档中不存在。注意，既然 Document 对象是它们自己的节点，这个方法可以应用于整个 XML 文档。
+			
+			
+			document.getElementById("result").innerHTML = resultDocument;
+		}else if(document.implementation && document.implementation.createDocument){
+			//ff等支持，但是ie9以上也支持document.implementation && document.implementation.createDocument
+			xsltProcessor = new XSLTProcessor();//xslt处理器       XSLTProcessor：ie9以上没有这个，所以此文档只适用于ie8以下和ff
+			xsltProcessor.importStylesheet(xslDOM);//引入样式表文件
+			var resultDocument = xsltProcessor.transformToFragment(xmlDOM,document);//将样式表和数据文件合并，生成一个新的document字符串
+			document.getElementById("result").appendChild(resultDocument);
+		}
+	</script>
+</body>
+</html>
