@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>2_hello_get方法请求_普通文本</title>
+
+
+</head>
+<body>
+	<p id="result">abc</p>
+
+	<script type="text/javascript">
+		//ie7+,ff,opera,chrome,safari都支持原生的XHR对象，可以像下面代码一样创建
+		//var xhr=new XMLHttpRequest();
+		
+		//如果还想支持ie的早期版本，则按下面函数
+		function createXHR(){
+			if(typeof XMLHttpRequest != "undefined"){//ie7+,ff,chrome,safari等
+				return new XMLHttpRequest();
+			}else if(typeof ActiveXObject != "undefined"){//ie早期版本
+				if(typeof arguments.callee.activeXString != "string"){//查看调用函数中是否存在一个activeXString的变量，因为一开始activeXString是没有值的，到后面才给了一个版本字符串
+					var versions=["MSXML2.XMLHttp6.0","MSXML2.XMLHttp3.0","MSXML2.XMLHttp"];//版本字符串可能的值
+					for(var i=0,len=versions.length;i<len;i++){
+						try{//在这里检测 是ie的哪个版本
+							var xhr=new ActiveXObject(versions[i]);
+							arguments.callee.activeXString = versions[i];//存了一个版本号到activeXString里面
+							return xhr;
+						}catch(ex){
+							//skip
+						}
+					}
+				}
+				return new ActiveXObject(arguments.callee.activeXString);
+			}else{
+				throw new Error("No XHR object available.");
+			}
+		}
+
+		var request=createXHR();
+		if(request){
+			//get请求
+			//当请求被发送到服务器时，我们需要执行一些基于响应的任务。
+			//每当 readyState 改变时，就会触发 onreadystatechange 事件。
+			//readyState 属性存有 XMLHttpRequest 的状态信息。
+			/*
+			 * 下面是 XMLHttpRequest 对象的三个重要的属性：
+				属性 					描述
+				onreadystatechange 	存储函数（或函数名），每当 readyState 属性改变时，就会调用该函数。
+				
+				readyState 			存有 XMLHttpRequest 的状态。从 0 到 4 发生变化。
+				    0: 请求未初始化
+				    1: 服务器连接已建立
+				    2: 请求已接收
+				    3: 请求处理中
+				    4: 请求已完成，且响应已就绪
+				
+				status 				200: "OK"
+									404: 未找到页面
+			 */
+			request.onreadystatechange=listener;
+			request.open("GET","http://192.168.1.238:8080/test/hello.action?name=zy",true);
+			request.send(null);//请求正式发出，发出时不带任何参
+		}
+
+		//回调函数用来接收服务器端的响应
+		function listener(){
+			//响应状态码：0,1,2,3,4
+			switch (request.readyState) {
+				case 1:
+					console.log("载入服务器中...");
+					break;
+				case 2:
+					console.log("载入完成...");
+					break;
+				case 3:
+					console.log("交互...");
+					break;
+				case 4:
+					console.log("服务器响应完成...");
+					if(request.status==200){
+						console.log("服务器正常响应...");
+						alert(request.responseText);
+					}
+				default:
+					break;
+			}
+		}
+	</script>
+</body>
+</html>

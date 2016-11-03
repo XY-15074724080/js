@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>1_生成XMLHttpRequest对象</title>
+
+	<script type="text/javascript">
+		//ie7+,ff,opera,chrome,safari都支持原生的XHR对象，可以像下面代码一样创建
+		//var xhr=new XMLHttpRequest();
+		
+		//如果还想支持ie的早期版本，则按下面函数
+		function createXHR(){
+			if(typeof XMLHttpRequest != "undefined"){//ie7+,ff,chrome,safari等
+				return new XMLHttpRequest();
+			}else if(typeof ActiveXObject != "undefined"){//ie早期版本
+				if(typeof arguments.callee.activeXString != "string"){//查看调用函数中是否存在一个activeXString的变量，因为一开始activeXString是没有值的，到后面才给了一个版本字符串
+					var versions=["MSXML2.XMLHttp6.0","MSXML2.XMLHttp3.0","MSXML2.XMLHttp"];//版本字符串可能的值
+					for(var i=0;len=versions.length;i<len;i++){
+						try{//在这里检测 是ie的哪个版本
+							var xhr=new ActiveXObject(versions[i]);
+							arguments.callee.activeXString = versions[i];//存了一个版本号到activeXString里面
+							return xhr;
+						}catch(ex){
+							//skip
+						}
+					}
+				}
+				return new ActiveXObject(arguments.callee.activeXString);
+			}else{
+				throw new Error("No XHR object available.");
+			}
+		}
+	</script>
+</head>
+<body>
+	
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>表单</title>
+</head>
+<body>
+	<form action="" method="post">
+		用户名：<input type="text" name="name" id="name" /><br/>
+		密码：<input type="password" name="password" id="password" /><br/>
+		<input type="button" value="登录" id="btn" onclick="login()" />
+	</form>
+
+	<script type="text/javascript">
+		//如果还想支持ie的早期版本，则按下面函数
+		function createXHR(){
+			if(typeof XMLHttpRequest != "undefined"){//ie7+,ff,chrome,safari等
+				return new XMLHttpRequest();
+			}else if(typeof ActiveXObject != "undefined"){//ie早期版本
+				if(typeof arguments.callee.activeXString != "string"){//查看调用函数中是否存在一个activeXString的变量，因为一开始activeXString是没有值的，到后面才给了一个版本字符串
+					var versions=["MSXML2.XMLHttp6.0","MSXML2.XMLHttp3.0","MSXML2.XMLHttp"];//版本字符串可能的值
+					for(var i=0,len=versions.length;i<len;i++){
+						try{//在这里检测 是ie的哪个版本
+							var xhr=new ActiveXObject(versions[i]);
+							arguments.callee.activeXString = versions[i];//存了一个版本号到activeXString里面
+							return xhr;
+						}catch(ex){
+							//skip
+						}
+					}
+				}
+				return new ActiveXObject(arguments.callee.activeXString);
+			}else{
+				throw new Error("No XHR object available.");
+			}
+		}
+
+
+		var request=createXHR();
+		function login(){
+			
+			if(request){
+				//取出用户名和密码
+				var name=document.getElementById("name").value;
+				var password=document.getElementById("password").value;
+				request.onreadystatechange=listener;
+				request.open("POST","http://192.168.1.238:8080/test/login.action",true);
+				//当使用post发送表单数据时，要加入一个请求头，表示这是一个表单数据
+				request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+				//POST方法请求服务器时，参数拼接后放在send中，多个参之间用&连接
+				request.send("name="+name+"&password="+password);
+			}
+		}
+
+		//回调函数用来接收服务器端的响应
+		function listener(){
+			if(request.readyState==4&&request.status==200){
+				document.getElementById("result").innerHTML=request.responseText;
+			}
+			
+		}
+	</script>
+	<p id="result"></p>	
+</body>
+</html>
