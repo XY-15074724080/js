@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>xml_添加和查询学生</title>
+	<script type="text/javascript" src="yclib.js"></script>
+</head>
+<body>
+	<form name="myform">
+		<input type="hidden" name="op" value="add" /><!--隐藏  专门给服务器传递数据的-->
+		<p>学生名：<input type="text" name="sname" value="张三" /></p>
+		<p>学生年龄：<input type="text" name="age" value="22" /></p><!--name的值是有协议(公司会发下来一个协议文档)规定的，这样才能实现前后端交互-->
+		<p><input type="button" onclick="add()" value="添加" /></p>
+	</form>
+
+	<p id="result"></p>
+
+	<span id="showall">显示所有学生信息_xml</span>
+
+	<span id="showallByJson">显示所有学生信息_Json</span>
+	<hr/>
+	<table border="1" width="700px">
+		<thead>
+			<tr>
+				<td>编号</td>
+				<td>姓名</td>
+				<td>年龄</td>
+			</tr>
+		</thead>
+		<tbody id="students">
+
+		</tbody>
+
+	</table>
+	<script type="text/javascript">
+			function add(){
+				var params=yc.serialize(document.myform);//序列化表单数据 -> sname=a&age=22
+				request=createXHR();//创建一个http对象
+				if(request){
+					//当页面加载状态改变的时候执行这个方法. 
+					//onreadystatechange 事件能辨识readyState 属性的改变
+					request.onreadystatechange=listener;
+					request.open("POST","http://192.168.15.222:8080/testxml/student.action",true);
+					//当使用post发送表单数据时，要加入一个请求头表示这是一个表单数据
+					request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+					//POST方式请求服务器时，参数拼接后放在send中，多个参之间用&连接
+					request.send(params);
+				}
+			}
+
+			function createXHR(){
+			if(typeof XMLHttpRequest != "undefined"){//ie7+,ff,chrome,safari等
+				return new XMLHttpRequest();
+			}else if(typeof ActiveXObject != "undefined"){//ie早期版本
+				if(typeof arguments.callee.activeXString != "string"){//查看调用函数中是否存在一个activeXString的变量，因为一开始activeXString是没有值的，到后面才给了一个版本字符串
+					var versions=["MSXML2.XMLHttp6.0","MSXML2.XMLHttp3.0","MSXML2.XMLHttp"];//版本字符串可能的值
+					for(var i=0,len=versions.length;i<len;i++){
+						try{//在这里检测 是ie的哪个版本
+							var xhr=new ActiveXObject(versions[i]);
+							arguments.callee.activeXString = versions[i];//存了一个版本号到activeXString里面
+							return xhr;
+						}catch(ex){
+							//skip
+						}
+					}
+				}
+				return new ActiveXObject(arguments.callee.activeXString);
+			}else{
+				throw new Error("No XHR object available.");
+			}
+		}
+
+		var request;
+		//回调函数用于接收服务器端的响应
+		function listener(){
+			if(request.readyState==4&&request.status==200){
+				document.getElementById("result").innerHTML=request.responseText;
+			}
+			
+		}
+
+		yc.addEvent("showall","click" ,function(){
+			request=createXHR();
+			if(request){
+				request.onreadystatechange=findAlllistener;//
+				request.open("POST","http://192.168.15.222:8080/testxml/student.action",true);
+				//当使用post发送表单数据时，要加入一个请求头。表示这是一个表单数据
+				request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				//POST方式请求服务器时，参数拼接后放在send中，多个参数之间用 & 连接
+				request.send("op=findAll");
+			}
+		});
+
+		function findAlllistener(){
+			if(request.readyState==4&&request.status==200){
+				var xml = request.responseXML;
+				var students=xml.getElementsByTagName("student");
+				for(var i=0;i<students.length;i++){
+					var s=students[i];
+					//id
+					//sname
+					//age
+				}
+				alert(request.responseText);
+			}
+		}
+
+		yc.addEvent("showallByJson","click" ,function(){
+			request=createXHR();
+			if(request){
+				request.onreadystatechange=findAlllistener2;//
+				request.open("POST","http://192.168.15.222:8080/testxml/student.action",true);
+				request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				request.send("op=findAll2");
+			}
+		});
+
+		function findAlllistener2(){
+			if(request.readyState==4&&request.status==200){
+				var str="";
+				var jsonString=request.responseText;
+				//调用eval，将json字符串转为json对象
+				var jsonarray=eval('('+jsonString+')');//这里是不安全的操作，容易被攻击。
+
+				for(var i=0;i<students.length;i++){
+					str+="<tr>";
+					var s=jsonarray[i];
+					//id
+					var id=student.id;
+					//sname
+					var sname=student.sname;
+					//age
+					var age=student.age;
+
+					str+="<td>"+id+"</td>";
+					str+="<td>"+sname+"</td>";
+					str+="<td>"+age+"</td>";
+
+					str+="</tr>";
+				}
+				yc.$("students").innerHTML=str;
+			}
+		}
+		</script>
+</body>
+</html>

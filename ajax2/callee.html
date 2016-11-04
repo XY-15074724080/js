@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>callee</title>
+</head>
+<body>
+	<script type="text/javascript">
+		function calleeLengthDemo(arg1, arg2) {
+			alert(arguments.callee.toString());//callee -> calleeLengthDemo(arg1, arg2)
+			if (arguments.length == arguments.callee.length) {//此时arguments.length=1   arguments.callee.length=2
+				window.alert("验证形参和实参长度正确！");
+				return;
+			} else {
+				alert("实参长度：" + arguments.length);
+				alert("形参长度： " + arguments.callee.length);
+			}
+		} 
+		calleeLengthDemo(1); 
+	</script>
+</body>
+</html>

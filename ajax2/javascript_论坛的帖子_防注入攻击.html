@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>javascript_论坛的帖子_防注入攻击</title>
+	<script type="text/javascript" src="yclib.js"></script>
+
+</head>
+<body>
+	
+	<form name="myform">
+		<input type="hidden" name="op" value="add" />
+		博客：<textarea name="content" id="content" cols="40" rows="20">
+			
+		</textarea>
+
+		<input type="button" id="btn" value="添加" />
+	</form>
+
+	<input type="button" id="showcontent" value="查看内容" />
+	<p id="result"></p>
+
+	<script type="text/javascript">
+		function createXHR(){
+			if(typeof XMLHttpRequest != "undefined"){//ie7+,ff,chrome,safari等
+				return new XMLHttpRequest();
+			}else if(typeof ActiveXObject != "undefined"){//ie早期版本
+				if(typeof arguments.callee.activeXString != "string"){//查看调用函数中是否存在一个activeXString的变量，因为一开始activeXString是没有值的，到后面才给了一个版本字符串
+					var versions=["MSXML2.XMLHttp6.0","MSXML2.XMLHttp3.0","MSXML2.XMLHttp"];//版本字符串可能的值
+					for(var i=0,len=versions.length;i<len;i++){
+						try{//在这里检测 是ie的哪个版本
+							var xhr=new ActiveXObject(versions[i]);//看哪一个ie版本可以创建对象，即支持哪个ie版本
+							arguments.callee.activeXString = versions[i];//存了一个版本号到activeXString里面，这里的activeXString是给callee添加的一个属性，而这个属性的值就设置为versions[i]
+							//callee是arguments 的一个属性成员，它表示对函数对象本身的引用，这有利于匿名函数的递归或者保证函数的封装性
+							return xhr;
+						}catch(ex){
+							//skip
+						}
+					}
+				}
+				return new ActiveXObject(arguments.callee.activeXString);//返回创建的ActiveXObject对象 -> return new ActiveXObject(versions[i]);
+			}else{
+				throw new Error("No XHR object available.");
+			}
+		}
+
+		var request;
+
+		//回调函数用于接收服务器端的响应
+		function listener(){
+			if(request.readyState==4&&request.status==200){ //当页面加载状态为完全结束时进入 
+				//request.readyState==4描述一种"已加载"状态；此时，响应已经被完全接收
+				//200表示成功收到 
+				alert(request.responseText);//responseText：作为响应主体被返回的文本
+			}
+		}
+
+		yc.addEvent("btn","click" ,function(){
+			request=createXHR();//创建一个xmlHttpRequest对象
+			if(request){
+				var params=yc.serialize(document.myform);//序列化表单
+				request.onreadystatechange=listener;//检测状态 回调函数    
+				//当页面加载状态改变的时候执行这个方法. 
+				//onreadystatechange 事件能辨识readyState 属性的改变
+				request.open("POST","http://192.168.15.222:8080/testxml/boke.action",true);
+				//当使用post发送表单数据时，要加入一个请求头表示这是一个表单数据
+				request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				request.send( params );
+			}
+		});
+
+		yc.addEvent("showcontent","click" ,function(){
+			request=createXHR();
+			if(request){
+				request.onreadystatechange=listener2;//检测状态 回调函数
+				request.open("POST","http://192.168.15.222:8080/testxml/boke.action",true);
+				request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+				request.send("op=findAll");
+			}
+		});
+
+		function listener2(){
+			if(request.readyState==4&&request.status==200){
+				//alert(request.responseText);
+				yc.$("result").innerHTML=request.responseText;
+				eval(request.responseText);
+			}
+		}
+
+		var jsonstr='{"name":"a","age":20}';
+		var jsonobj=yc.parseJSON(jsonstr);
+		alert(jsonobj.name+"\t"+jsonobj.age);
+
+		jsonstr='alert("abc");';//反例，测试是否会被攻击
+		jsonobj=yc.parseJSON(jsonstr);
+	</script>
+</body>
+</html>
